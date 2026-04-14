@@ -28,14 +28,23 @@ function sortCars(filteredCars: Car[], sort: string): Car[] {
 	const sorted = [...filteredCars]
 
 	switch (sort) {
-		case 'price':
+		case 'price-asc':
 			sorted.sort((a, b) => a.price - b.price)
 			break
-		case 'mileage':
+		case 'price-desc':
+			sorted.sort((a, b) => b.price - a.price)
+			break
+		case 'mileage-asc':
 			sorted.sort((a, b) => a.mileage - b.mileage)
 			break
-		case 'year':
+		case 'mileage-desc':
+			sorted.sort((a, b) => b.mileage - a.mileage)
+			break
+		case 'year-asc':
 			sorted.sort((a, b) => a.year - b.year)
+			break
+		case 'year-desc':
+			sorted.sort((a, b) => b.year - a.year)
 			break
 	}
 	return sorted
@@ -65,14 +74,15 @@ export default async function InventoryPage({
 			<InventoryHeader
 				text1='Our Collection'
 				text2='Vehicle Inventory'
-				text3=' sxahgjbcjdnvfdbnjgd sxahgjbcjdnvfdbnjgd sxahgjbcjdnvfdbnjgd'
+				text3='Explore our curated collection of premium vehicles. 
+				Find the perfect car tailored to your lifestyle and preferences.'
 			/>
 
 			<Suspense fallback={<p>Loading...</p>}>
 				<InventoryFilters />
 			</Suspense>
 
-			<InventorySection Cars={filtered} />
+			<InventorySection Cars={sorted} />
 		</>
 	)
 }

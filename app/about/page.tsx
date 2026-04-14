@@ -1,5 +1,6 @@
 import InventoryHeader from '@/components/inventoryHeader'
 import { Button } from '@/components/ui/button'
+import  Link  from 'next/link'
 import Image from 'next/image'
 
 export const metadata = {
@@ -46,13 +47,13 @@ export default function About() {
 									revolutionize the way people buy cars. We understand that
 									purchasing a car can be a daunting and stressful experience,
 									which is why we set out to create a platform that puts the
-									customer first. 
+									customer first.
 								</p>
 								<p>
 									At CarShop, we believe that buying a car should be an exciting
 									and rewarding experience. We are committed to building lasting
 									relationships with our customers and being a trusted partner
-									in their car buying journey. 
+									in their car buying journey.
 								</p>
 								<p>
 									Thank you for choosing CarShop. We look forward to helping you
@@ -66,8 +67,13 @@ export default function About() {
 			</section>
 			<section className='px-8 py-20 bg-primary text-white'>
 				<div className='mx-auto flex justify-between'>
-          <h2>Ready to visit us?</h2>
-					<Button variant = 'ghost'>Visit Our Store</Button>
+					<h2>Ready to visit us?</h2>
+					<Button
+						variant='ghost'
+						className='px-8 text-sm font-semibold uppercase text-white hover:bg-white/10 hover:text-white' asChild
+					><Link href='/inventory'>
+						Visit Our Store </Link>
+					</Button>
 				</div>
 			</section>
 		</section>

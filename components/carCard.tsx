@@ -19,7 +19,7 @@ export default function CarCard({ car }: props) {
 				/>
 				<div className='absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent' />
 				{car.featured && (
-					<div className='absolute left-0 top-5 bg-accent px-4 py-1.5'>
+					<div className='absolute left-0 top-5 bg-popover px-4 py-1.5 '>
 						Featured
 					</div>
 				)}
