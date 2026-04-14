@@ -1,5 +1,3 @@
-import Footer from '@/components/footer'
-import { Header } from '@/components/header'
 import { cn } from '@/lib/utils'
 import type { Metadata } from 'next'
 import { DM_Sans, Geist, Geist_Mono, JetBrains_Mono } from 'next/font/google'
@@ -45,9 +43,7 @@ export default function RootLayout({
 			)}
 		>
 			<body className='min-h-full flex flex-col'>
-				<Header />
 				<main>{children}</main>
-				<Footer />
 			</body>
 		</html>
 	)
