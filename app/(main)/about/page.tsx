@@ -1,7 +1,7 @@
 import InventoryHeader from '@/components/inventoryHeader'
 import { Button } from '@/components/ui/button'
-import  Link  from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export const metadata = {
 	title: 'About Us - CarShop',
@@ -70,9 +70,10 @@ export default function About() {
 					<h2>Ready to visit us?</h2>
 					<Button
 						variant='ghost'
-						className='px-8 text-sm font-semibold uppercase text-white hover:bg-white/10 hover:text-white' asChild
-					><Link href='/inventory'>
-						Visit Our Store </Link>
+						className='px-8 text-sm font-semibold uppercase text-white hover:bg-white/10 hover:text-white'
+						asChild
+					>
+						<Link href='/inventory'>Visit Our Store </Link>
 					</Button>
 				</div>
 			</section>
