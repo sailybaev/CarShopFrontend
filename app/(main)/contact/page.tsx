@@ -12,7 +12,7 @@ export default function ContactUs() {
 				}
 			/>
 
-			<div className='px-20 py-20'>
+			<div className='px-20 py-20 bg-secondary text-secondary-foreground'>
 				<ContactForm />
 			</div>
 		</section>

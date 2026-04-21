@@ -63,7 +63,7 @@ export default function InventoryFilters() {
 		sort !== 'default'
 
 	return (
-		<div className='mb-12 flex flex-wrap items-center gap-3'>
+		<div className='mb-5  flex flex-wrap items-center gap-3 bg-secondary text-secondary-foreground px-8'>
 			<Select value={brand} onValueChange={v => updateParam('brand', v)}>
 				<SelectTrigger className='h-10 min-w-3 uppercase'>
 					<SelectValue placeholder='Brand' />

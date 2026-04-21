@@ -1,3 +1,4 @@
+import AddToCartButton from '@/components/addToCartButton'
 import CarCard from '@/components/carCard'
 import { Button } from '@/components/ui/button'
 import { cars, formatPrice, getCarById } from '@/lib/cars'
@@ -52,7 +53,7 @@ export default async function CarDetail({ params }: props) {
 		}
 	]
 	return (
-		<section className='min-h-screen'>
+		<section className='min-h-screen bg-secondary text-secondary-foreground'>
 			<div className='border-b border-border px-8 py-4'>
 				<div className='uppercase text-xs font-semibold'>
 					<Link href='/inventory' className='inline-flex items-center gap-2'>
@@ -74,7 +75,7 @@ export default async function CarDetail({ params }: props) {
 									className='object-cover'
 								/>
 								{car.featured && (
-									<div className='absolute left-0 top-5 bg-accent px-4 py-1.5'>
+									<div className='absolute left-0 top-5 bg-secondary px-4 py-1.5'>
 										Featured
 									</div>
 								)}
@@ -121,6 +122,7 @@ export default async function CarDetail({ params }: props) {
 									>
 										schedule a test drive
 									</Button>
+									<AddToCartButton car = {car}/>
 									<p className='text-xs text-muted-foreground text-center'>
 										No obligation * Respond within 24 hours
 									</p>

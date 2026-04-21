@@ -9,7 +9,7 @@ interface recomendationProps {
 
 export default function RecomendationSection({ cars }: recomendationProps) {
 	return (
-		<section className='px-8 py-20'>
+		<section className='px-8 py-20 bg-secondary text-secondary-foreground'>
 			<div className='container mx-auto'>
 				<div className='flex justify-between mb-20 '>
 					<div>

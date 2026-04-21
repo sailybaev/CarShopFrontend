@@ -2,12 +2,14 @@ import { Car } from '@/lib/cars'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from './ui/button'
+import AddToCartButton from './addToCartButton'
 
 interface props {
 	car: Car
 }
 
 export default function CarCard({ car }: props) {
+	
 	return (
 		<Link href={`/inventory/${car.id}`} className='group'>
 			<div className='relative aspect-4/3 overflow-hidden bg-muted'>
@@ -42,6 +44,7 @@ export default function CarCard({ car }: props) {
 					<Button variant='outline' className='px-8'>
 						Buy
 					</Button>
+					<AddToCartButton variant='icon' car= {car}/>
 				</div>
 			</div>
 		</Link>

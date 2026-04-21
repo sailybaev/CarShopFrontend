@@ -1,4 +1,9 @@
+'use client'
+
+import { useCart } from '@/app/context/cartProvider'
+import { ThemeContext } from '@/app/context/provider'
 import Link from 'next/link'
+import { useContext } from 'react'
 import { Button } from './ui/button'
 const navLinks = [
 	{ href: '/', label: 'home' },
@@ -8,10 +13,12 @@ const navLinks = [
 ]
 
 export function Header() {
+	const { theme, toggleTheme } = useContext(ThemeContext)
+	const { items } = useCart()
 	return (
-		<header className='sticky top-0 z-50 w-full border-b border-white bg-white'>
+		<header className='sticky top-0 z-50 w-full border-b border-border bg-secondary text-secondary-foreground'>
 			<div className='container mx-auto flex justify-between items-center px-8 h-20'>
-				<Link href='/' className='text-2xl font-bold text-gray-800'>
+				<Link href='/' className='text-2xl font-bold'>
 					<span className='text-lg font-bold uppercase'>CarHub</span>
 				</Link>
 
@@ -20,7 +27,7 @@ export function Header() {
 						<Link
 							key={link.href}
 							href={link.href}
-							className='text-lg font-medium text-gray-800 hover:text-gray-500 transition-colors'
+							className='text-lg font-medium hover:text-gray-500 transition-colors'
 						>
 							{link.label}
 						</Link>
@@ -35,6 +42,10 @@ export function Header() {
 						Book a call
 					</Link>
 				</Button>
+				<Button onClick={toggleTheme}>
+					{theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+				</Button>
+				<Button>Cart {items.length}</Button>
 			</div>
 		</header>
 	)

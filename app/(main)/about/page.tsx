@@ -11,7 +11,7 @@ export const metadata = {
 
 export default function About() {
 	return (
-		<section className='min-h-screen'>
+		<section className='min-h-screen bg-secondary text-secondary-foreground '>
 			<InventoryHeader
 				text1='About Us'
 				text2='Learn more about CarShop'
