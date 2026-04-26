@@ -3,8 +3,10 @@
 import { useCart } from '@/app/context/cartProvider'
 import { ThemeContext } from '@/app/context/provider'
 import Link from 'next/link'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { Button } from './ui/button'
+import { Moon, ShoppingBag, Sun } from 'lucide-react'
+import Cart from './cartDrawer'
 const navLinks = [
 	{ href: '/', label: 'home' },
 	{ href: '/about', label: 'about' },
@@ -15,6 +17,7 @@ const navLinks = [
 export function Header() {
 	const { theme, toggleTheme } = useContext(ThemeContext)
 	const { items } = useCart()
+	const [isOpen, setIsOpen] = useState(false)
 	return (
 		<header className='sticky top-0 z-50 w-full border-b border-border bg-secondary text-secondary-foreground'>
 			<div className='container mx-auto flex justify-between items-center px-8 h-20'>
@@ -33,19 +36,24 @@ export function Header() {
 						</Link>
 					))}
 				</nav>
-
-				<Button className='hover:bg-primary/80 transition-colors'>
-					<Link
-						href='/contact'
-						className='px-8 text-sm font-semibold uppercase'
-					>
-						Book a call
-					</Link>
-				</Button>
-				<Button onClick={toggleTheme}>
-					{theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-				</Button>
-				<Button>Cart {items.length}</Button>
+				<div className='flex justify-center'>
+					<Button variant = 'secondary' className='hover:text-gray-400 transition-colors' onClick={()=>setIsOpen(true)}>
+						<ShoppingBag /> {items.length}
+					</Button>
+					{isOpen && <Cart/>}
+					<Button variant = 'secondary' onClick={toggleTheme} className='hover:text-gray-400 transition-colors mx-2'>
+						{theme === 'light' ? <Moon /> : <Sun />}
+					</Button>
+					
+					<Button className='hover:bg-primary/80 transition-colors'>
+						<Link
+							href='/contact'
+							className='px-8 text-sm font-semibold uppercase '
+						>
+							Book a call
+						</Link>
+					</Button>
+				</div>
 			</div>
 		</header>
 	)

@@ -15,7 +15,7 @@ interface CartContextType {
 	totalPrice: number;
 }
 
-const CartContext = createContext<CartContextType|null>(null);
+export const CartContext = createContext<CartContextType|null>(null);
 export default function CartProvider({children}: {children: React.ReactNode}) {
 	const [items, setItems] = useState<CartItem[]>([])
 	useEffect(() => {
@@ -31,7 +31,7 @@ export default function CartProvider({children}: {children: React.ReactNode}) {
 	function addToCart(item: CartItem) {
 		if(!items.find(i => i.id === item.id)) 
 		  setItems(prevItems => [...prevItems, item]);
-	}
+	}	
 	function removeFromCart(id: number){
 		setItems(prevItems => prevItems.filter(item => item.id !== id.toString()));
 	}

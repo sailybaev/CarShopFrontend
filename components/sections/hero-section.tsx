@@ -1,3 +1,6 @@
+'use client'
+
+import {motion}  from 'motion/react'
 import Link from 'next/link'
 import { Button } from '../ui/button'
 
@@ -18,7 +21,12 @@ export default function HeroSection() {
 				<div className='absolute inset-0 bg-black/50 ' />
 			</div>
 
-			<div className='container relative z-10 mx-auto px-8 '>
+			<motion.div
+				className='container relative z-10 mx-auto px-8 '
+				initial={{ opacity: 0, y: 40 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.8 }}
+			>
 				<div className='max-w-full'>
 					<p className='text-lg font-semibold uppercase text-primary-foreground'>
 						Premium auto experience
@@ -31,20 +39,36 @@ export default function HeroSection() {
 					</h1>
 
 					<div className='mt-8 flex items-center gap-6 '>
-						<Button size='lg' variant='secondary' className='h-14 px-10 text-sm font-semibold uppercase' asChild>
-							<Link href='/inventory' className='px-8 text-sm font-semibold uppercase'>
+						<Button
+							size='lg'
+							variant='secondary'
+							className='h-14 px-10 text-sm font-semibold uppercase'
+							asChild
+						>
+							<Link
+								href='/inventory'
+								className='px-8 text-sm font-semibold uppercase'
+							>
 								Explore Our Inventory
 							</Link>
 						</Button>
 
-						<Button size='lg' variant='ghost' className='h-14 px-10 text-sm font-semibold uppercase text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground' asChild> 
-							<Link href='/contact' className='px-8 text-sm font-semibold uppercase'>
+						<Button
+							size='lg'
+							variant='ghost'
+							className='h-14 px-10 text-sm font-semibold uppercase text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground'
+							asChild
+						>
+							<Link
+								href='/contact'
+								className='px-8 text-sm font-semibold uppercase'
+							>
 								Book a Call
 							</Link>
 						</Button>
 					</div>
 				</div>
-			</div>
+			</motion.div>
 		</section>
 	)
 }

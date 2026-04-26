@@ -1,25 +1,19 @@
+'use client'
+
 import InventoryFilters from '@/components/inventory-filters'
 import InventoryHeader from '@/components/inventoryHeader'
 import InventorySection from '@/components/sections/inventorySection'
-import { Car, cars } from '@/lib/cars'
-import { Suspense } from 'react'
+import { fetchListing } from '@/lib/api'
+import { Car } from '@/lib/cars'
+import { useSearchParams } from 'next/navigation'
+import { Suspense, useEffect, useState } from 'react'
 
-export const metadata = {
-	title: 'Inventory',
-	description: 'Hello'
-}
 
-function filterCars(
-	allCars: Car[],
-	brand: string,
-	fuelType: string,
-	transmission: string
-): Car[] {
+
+function filterCars(allCars: Car[], brand: string): Car[] {
 	return allCars.filter(car => {
 		if (brand !== 'All' && car.brand !== brand) return false
-		if (fuelType !== 'All' && car.fuelType !== fuelType) return false
-		if (transmission !== 'All' && car.transmission !== transmission)
-			return false
+
 		return true
 	})
 }
@@ -34,12 +28,7 @@ function sortCars(filteredCars: Car[], sort: string): Car[] {
 		case 'price-desc':
 			sorted.sort((a, b) => b.price - a.price)
 			break
-		case 'mileage-asc':
-			sorted.sort((a, b) => a.mileage - b.mileage)
-			break
-		case 'mileage-desc':
-			sorted.sort((a, b) => b.mileage - a.mileage)
-			break
+
 		case 'year-asc':
 			sorted.sort((a, b) => a.year - b.year)
 			break
@@ -50,25 +39,18 @@ function sortCars(filteredCars: Car[], sort: string): Car[] {
 	return sorted
 }
 
-export default async function InventoryPage({
-	searchParams
-}: {
-	searchParams: Promise<{
-		brand?: string
-		fuelType?: string
-		transmission?: string
-		sort?: string
-	}>
-}) {
-	const params = await searchParams
+export default  function InventoryPage() {
+	const params =  useSearchParams()
 
-	const brand = params.brand ?? 'All'
-	const fuelType = params.fuelType ?? 'All'
-	const transmission = params.transmission ?? 'All'
-	const sort = params.sort ?? 'price'
-	const filtered = filterCars(cars, brand, fuelType, transmission)
+	const brand = params.get('brand') ?? 'All'
+	const [allCars, setAllcars] = useState<Car[]>([])
+	const sort = params.get('sort') ?? 'price'
+	const filtered = filterCars(allCars, brand)
 	const sorted = sortCars(filtered, sort)
 
+	useEffect(() => {
+		fetchListing().then(c => setAllcars(c))
+	}, [])
 	return (
 		<>
 			<InventoryHeader
