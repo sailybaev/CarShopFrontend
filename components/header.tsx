@@ -1,12 +1,12 @@
 'use client'
 
 import { useCart } from '@/app/context/cartProvider'
-import { ThemeContext } from '@/app/context/provider'
+import { ThemeContext } from '@/app/context/themeProvider'
+import { Moon, ShoppingBag, Sun } from 'lucide-react'
 import Link from 'next/link'
 import { useContext, useState } from 'react'
-import { Button } from './ui/button'
-import { Moon, ShoppingBag, Sun } from 'lucide-react'
 import Cart from './cartDrawer'
+import { Button } from './ui/button'
 const navLinks = [
 	{ href: '/', label: 'home' },
 	{ href: '/about', label: 'about' },
@@ -37,14 +37,22 @@ export function Header() {
 					))}
 				</nav>
 				<div className='flex justify-center'>
-					<Button variant = 'secondary' className='hover:text-gray-400 transition-colors' onClick={()=>setIsOpen(true)}>
+					<Button
+						variant='secondary'
+						className='hover:text-gray-400 transition-colors'
+						onClick={() => setIsOpen(true)}
+					>
 						<ShoppingBag /> {items.length}
 					</Button>
-					{isOpen && <Cart/>}
-					<Button variant = 'secondary' onClick={toggleTheme} className='hover:text-gray-400 transition-colors mx-2'>
+					{isOpen && <Cart />}
+					<Button
+						variant='secondary'
+						onClick={toggleTheme}
+						className='hover:text-gray-400 transition-colors mx-2'
+					>
 						{theme === 'light' ? <Moon /> : <Sun />}
 					</Button>
-					
+
 					<Button className='hover:bg-primary/80 transition-colors'>
 						<Link
 							href='/contact'

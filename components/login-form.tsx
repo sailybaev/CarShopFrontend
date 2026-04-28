@@ -1,5 +1,6 @@
 'use client'
 
+import { useAuth } from '@/app/context/authProvider'
 import { Button } from '@/components/ui/button'
 import {
 	Field,
@@ -10,14 +11,30 @@ import {
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { RowsIcon } from '@phosphor-icons/react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 export function LoginForm({
 	className,
 	...props
 }: React.ComponentProps<'div'>) {
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+	const { Login } = useAuth()
+	const router = useRouter()
+
+	async function handleSubmit(e: React.SubmitEvent) {
+		e.preventDefault
+		try {
+			await Login(email, password)
+			router.push('/inventory')
+		} catch (error: unknown) {
+			console.log(error)
+		}
+	}
 	return (
 		<div className={cn('flex flex-col gap-6', className)} {...props}>
-			<form>
+			<form onSubmit={handleSubmit}>
 				<FieldGroup>
 					<div className='flex flex-col items-center gap-2 text-center'>
 						<a
@@ -41,6 +58,8 @@ export function LoginForm({
 							type='email'
 							placeholder='m@example.com'
 							required
+							value={email}
+							onChange={e => setEmail(e.target.value)}
 						/>
 					</Field>
 					<Field>
@@ -50,6 +69,8 @@ export function LoginForm({
 							type='password'
 							placeholder='••••••••'
 							required
+							value={password}
+							onChange={e => setPassword(e.target.value)}
 						/>
 					</Field>
 					<Field>

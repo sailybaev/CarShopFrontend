@@ -1,10 +1,11 @@
 import { cn } from '@/lib/utils'
 import type { Metadata } from 'next'
 import { DM_Sans, Geist, Geist_Mono, JetBrains_Mono } from 'next/font/google'
-import ThemeProvider from './context/provider'
+import CartProvider from './context/cartProvider'
+import ThemeProvider from './context/themeProvider'
 import ThemeWrapper from './context/ThemeWrapper'
 import './globals.css'
-import CartProvider from './context/cartProvider'
+import { AuthProvider } from './context/authProvider'
 
 const jetbrainsMono = JetBrains_Mono({
 	subsets: ['latin'],
@@ -48,9 +49,12 @@ export default function RootLayout({
 			<body className='min-h-full flex flex-col'>
 				<ThemeProvider>
 					<ThemeWrapper>
+						<AuthProvider>
 						<CartProvider>
-						<main>{children}</main>
+			
+							<main>{children}</main>
 						</CartProvider>
+						</AuthProvider>
 					</ThemeWrapper>
 				</ThemeProvider>
 			</body>

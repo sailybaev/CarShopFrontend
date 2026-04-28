@@ -1,3 +1,4 @@
+'use client'
 import { createContext, useContext, useEffect, useState } from 'react'
 
 export interface AuthUser {
@@ -71,8 +72,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		setToken(t)
 		setUser(decodeToken(t))
 	}
-	async function Register(email: string, password: string) {
-		const t = await postForm('register', { email, password })
+	async function Register(email: string, password: string, role: string) {
+		const t = await postForm('register', { email, password, role })
 		localStorage.setItem('token', t)
 		setToken(t)
 		setUser(decodeToken(t))
