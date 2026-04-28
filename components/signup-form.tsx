@@ -13,30 +13,36 @@ import { cn } from '@/lib/utils'
 import { RowsIcon } from '@phosphor-icons/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue
+} from './ui/select'
 
 export function SignupForm({
 	className,
 	...props
 }: React.ComponentProps<'div'>) {
-	  const [email, setEmail] = useState('')
-		const [password, setPassword] = useState('')
-		const [role, setRole] = useState('')
-		const [error, setError]=useState('')
-		const { Register } = useAuth()
-		const router = useRouter()
-		const roles = [
-			{value: 'customer', label: 'Customer - want to Buy a car'}, 
-			{value: 'privateSeller', label: 'Private Seller - want to Sell a car'}
-		]
-		async function handleSubmit(e: React.FormEvent) {
-		e.preventDefault
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+	const [role, setRole] = useState('')
+	const [error, setError] = useState('')
+	const { Register } = useAuth()
+	const router = useRouter()
+	const roles = [
+		{ value: 'customer', label: 'Customer - want to Buy a car' },
+		{ value: 'privateSeller', label: 'Private Seller - want to Sell a car' }
+	]
+	async function handleSubmit(e: React.FormEvent) {
+		e.preventDefault()
 		try {
 			await Register(email, password, role)
 			router.push('/inventory')
 		} catch (error: unknown) {
 			console.log(error)
-			setError(error instanceof Error? error.message: '')
+			setError(error instanceof Error ? error.message : '')
 		}
 	}
 	return (
@@ -66,30 +72,28 @@ export function SignupForm({
 							placeholder='m@example.com'
 							required
 							value={email}
-							onChange={(e)=>setEmail(e.target.value)}
+							onChange={e => setEmail(e.target.value)}
 						/>
 					</Field>
-          <Field>
+					<Field>
 						<FieldLabel htmlFor='password'>Password</FieldLabel>
 						<Input
 							id='password'
 							type='password'
 							placeholder='••••••••'
 							required
-							value = {password}
-							onChange={(e)=>setPassword(e.target.value)}
+							value={password}
+							onChange={e => setPassword(e.target.value)}
 						/>
 					</Field>
 					<Field>
-						<FieldLabel htmlFor='role'>
-							Role
-						</FieldLabel>
+						<FieldLabel htmlFor='role'>Role</FieldLabel>
 						<Select value={role} onValueChange={setRole}>
 							<SelectTrigger id='role'>
-								<SelectValue/>
+								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								{roles.map((r) => (
+								{roles.map(r => (
 									<SelectItem key={r.value} value={r.value}>
 										{r.label}
 									</SelectItem>
@@ -100,7 +104,6 @@ export function SignupForm({
 					<Field>
 						<Button type='submit'>Create Account</Button>
 					</Field>
-
 				</FieldGroup>
 			</form>
 			<FieldDescription className='px-6 text-center'>

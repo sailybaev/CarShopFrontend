@@ -5,7 +5,7 @@ export interface Car {
   year: number
   price: number
   
-  image: string
+  image?: string
   featured?: boolean
 }
 

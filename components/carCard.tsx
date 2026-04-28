@@ -13,12 +13,14 @@ export default function CarCard({ car }: props) {
 	return (
 		<Link href={`/inventory/${car.id}`} className='group'>
 			<div className='relative aspect-4/3 overflow-hidden bg-muted'>
-				<Image
-					src={car.image}
-					alt={car.brand}
-					fill
-					className='object-cover transition-transform duration-700 group-hover:scale-105'
-				/>
+				{car.image && (
+					<Image
+						src={car.image}
+						alt={car.brand}
+						fill
+						className='object-cover transition-transform duration-700 group-hover:scale-105'
+					/>
+				)}
 				<div className='absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent' />
 				{car.featured && (
 					<div className='absolute left-0 top-5 bg-popover px-4 py-1.5 '>

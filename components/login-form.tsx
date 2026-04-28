@@ -23,8 +23,8 @@ export function LoginForm({
 	const { Login } = useAuth()
 	const router = useRouter()
 
-	async function handleSubmit(e: React.SubmitEvent) {
-		e.preventDefault
+	async function handleSubmit(e: React.FormEvent) {
+		e.preventDefault()
 		try {
 			await Login(email, password)
 			router.push('/inventory')

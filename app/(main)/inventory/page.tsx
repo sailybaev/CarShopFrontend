@@ -56,8 +56,7 @@ export default  function InventoryPage() {
 			<InventoryHeader
 				text1='Our Collection'
 				text2='Vehicle Inventory'
-				text3='Explore our curated collection of premium vehicles. 
-				Find the perfect car tailored to your lifestyle and preferences.'
+				text3='Explore our curated collection of premium vehicles. Find the perfect car tailored to your lifestyle and preferences.'
 			/>
 
 			<Suspense fallback={<p>Loading...</p>}>
