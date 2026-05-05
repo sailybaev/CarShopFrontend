@@ -13,7 +13,7 @@ interface AuthContextType {
 	Register: (password: string, email: string, role: string) => Promise<void>
 	Logout: () => void
 }
-const url = 'http://localhost:5107'
+const url = 'https://carshop.sailybaev.kz'
 const authContext = createContext<AuthContextType | null>(null)
 function decodeToken(token: string): AuthUser | null {
 	try {
@@ -94,3 +94,4 @@ export function useAuth(){
 	if(!items) throw new Error('useAuth must be used inside of authProvider')
 	return items
 }
+// дэшборд реализовать и юрл поменять 
