@@ -24,7 +24,7 @@ export default function CreateSellerForm() {
 	async function handleSubmit(e: React.FormEvent) {
 		e.preventDefault()
 		try {
-			if(!user || !token){
+			if (!user || !token) {
 				router.push('/login')
 				return
 			}
@@ -35,17 +35,18 @@ export default function CreateSellerForm() {
 					Authorization: `Bearer ${token}`
 				},
 				body: JSON.stringify({
-					companyName: companyName,
-					userID: user.id,
-					companyCity: companyCity,
-					companyAddress: companyAddress,
-					companyPhoneNumber: companyPhoneNumber,
-					companyEmail: companyEmail
+					companyName,
+					UserID: user.id,
+					CompanyCity: companyCity,
+					CompanyAddress: companyAddress,
+					CompanyPhoneNumber: companyPhoneNumber,
+					CompanyEmail: companyEmail
 				})
 			})
 			if (!response.ok) {
 				throw new Error('Failed to create seller')
 			}
+			localStorage.setItem('sellerId', await response.json())
 			router.push('/seller/dashboard')
 		} catch (error) {
 			console.log(error)
