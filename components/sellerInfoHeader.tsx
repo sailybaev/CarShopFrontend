@@ -15,14 +15,15 @@ interface Seller {
 	isVerified: boolean
 }
 async function getSellerByUserId(userId: string): Promise<Seller> {
+	const sellerId = localStorage.getItem('sellerId')
 	const response = await fetch(
-		`http://localhost:5107/seller/UserId?userId=${userId}`
+		`https://carshop.sailybaev.kz/seller/${sellerId}`
 	)
 
 	if (!response.ok) {
 		throw new Error('Failed')
 	}
-	
+
 	return response.json()
 }
 export default function SellerInfoHeader() {
@@ -73,7 +74,8 @@ export default function SellerInfoHeader() {
 						Contacts: {seller.companyEmail},{seller.companyPhoneNumber}
 					</p>
 				</div>
-				<Button>New Listing</Button> //РЕАЛИЗОВАТЬ!
+				<Button>New Listing</Button>
+				{/*//РЕАЛИЗОВАТЬ!*/}
 			</div>
 		</section>
 	)
