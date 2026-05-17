@@ -1,7 +1,9 @@
 import AddToCartButton from '@/components/addToCartButton'
 import CarCard from '@/components/carCard'
+import MessageSellerButton from '@/components/messageSellerButton'
 import { Button } from '@/components/ui/button'
-import { cars, formatPrice, getCarById } from '@/lib/cars'
+import { fetchListing, fetchListingById } from '@/lib/api'
+import { formatPrice } from '@/lib/cars'
 import {
 	ArrowLeft,
 	ArrowRight,
@@ -19,10 +21,11 @@ interface props {
 }
 export default async function CarDetail({ params }: props) {
 	const { id } = await params
-	const car = getCarById(id)
+	const car = await fetchListingById(id)
 
 	if (!car) notFound()
 
+	const cars = await fetchListing()
 	const related = cars.filter(Car => Car.id !== car.id).slice(0, 3)
 	const values = {
 		year: String(car.year),
@@ -122,7 +125,16 @@ export default async function CarDetail({ params }: props) {
 									>
 										schedule a test drive
 									</Button>
-									<AddToCartButton car = {car}/>
+									<AddToCartButton car={car} />
+
+
+									<MessageSellerButton
+										listingId={car.id}
+										sellerId={car.sellerId}
+										listingTitle={`${car.brand} ${car.name}`}
+										listingImage={car.image}
+									/>
+									
 									<p className='text-xs text-muted-foreground text-center'>
 										No obligation * Respond within 24 hours
 									</p>

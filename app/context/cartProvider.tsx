@@ -9,7 +9,7 @@ export type CartItem = Car ;
 interface CartContextType {
 	items: CartItem[];
 	addToCart: (item: CartItem) => void;
-	removeFromCart: (id: number) => void;
+	removeFromCart: (id: string) => void;
 	clearCart: () => void;
 	isInCart: (id: number) => boolean;
 	totalPrice: number;
@@ -32,8 +32,8 @@ export default function CartProvider({children}: {children: React.ReactNode}) {
 		if(!items.find(i => i.id === item.id)) 
 		  setItems(prevItems => [...prevItems, item]);
 	}	
-	function removeFromCart(id: number){
-		setItems(prevItems => prevItems.filter(item => item.id !== id.toString()));
+	function removeFromCart(id: string){
+		setItems(prevItems => prevItems.filter(item => item.id !== id));
 	}
 	function clearCart(){
 		setItems([])

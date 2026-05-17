@@ -28,21 +28,21 @@ export default function HeroSection() {
 				transition={{ duration: 0.8 }}
 			>
 				<div className='max-w-full'>
-					<p className='text-lg font-semibold uppercase text-primary-foreground'>
+					<p className=' text-xs md:text-lg font-semibold uppercase text-primary-foreground'>
 						Premium auto experience
 					</p>
 
-					<h1 className='mt-5 text-5xl font-bold text-primary-foreground uppercase'>
+					<h1 className='mt-5  text-3xl md:text-5xl font-bold text-primary-foreground uppercase'>
 						Exceptional vehicles.
 						<br />
 						Unmatched service.
 					</h1>
 
-					<div className='mt-8 flex items-center gap-6 '>
+					<div className='mt-8 flex flex-col sm:flex-row items-center gap-6 '>
 						<Button
 							size='lg'
 							variant='secondary'
-							className='h-14 px-10 text-sm font-semibold uppercase'
+							className='h-14 px-10 text-sm font-semibold uppercase w-full sm:w-auto'
 							asChild
 						>
 							<Link
@@ -56,7 +56,7 @@ export default function HeroSection() {
 						<Button
 							size='lg'
 							variant='ghost'
-							className='h-14 px-10 text-sm font-semibold uppercase text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground'
+							className='h-14 px-10 text-sm font-semibold uppercase text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground w-full sm:w-auto'
 							asChild
 						>
 							<Link

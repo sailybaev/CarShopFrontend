@@ -4,7 +4,7 @@ interface apiMoney {
 	amount: number
 	currency: string
 }
-const api = 'http://localhost:5107'
+const api = 'https://carshop.sailybaev.kz'
 interface apiCar {
 	id: string
 	brand: string
@@ -37,7 +37,8 @@ function ListingToCar(listing: apiListing): Car {
 		year: listing.car.year,
 		price: listing.car.price.amount,
 		image: firstImage,
-		featured: listing.status === 1
+		featured: listing.status === 1,
+		sellerId: listing.sellerId
 	}
 }
 

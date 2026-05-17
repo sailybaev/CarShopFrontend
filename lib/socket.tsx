@@ -4,8 +4,8 @@
 // Управляет подключением к SignalR-хабу, списком диалогов и сообщениями.
 // Оборачивает всё приложение через ChatProvider в app/layout.tsx.
 
-import { createContext, useContext, useState, useEffect, useRef } from 'react'
 import * as signalR from '@microsoft/signalr'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { useAuth } from '../app/context/authProvider'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5107'

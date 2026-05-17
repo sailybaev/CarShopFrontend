@@ -7,6 +7,11 @@ export interface Car {
   
   image?: string
   featured?: boolean
+
+  sellerId: string
+  mileage?: string
+  transmission?: string
+  fuelType?: string
 }
 
 

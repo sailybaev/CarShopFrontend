@@ -1,11 +1,12 @@
+import { ChatProvider } from '@/lib/socket'
 import { cn } from '@/lib/utils'
 import type { Metadata } from 'next'
 import { DM_Sans, Geist, Geist_Mono, JetBrains_Mono } from 'next/font/google'
+import { AuthProvider } from './context/authProvider'
 import CartProvider from './context/cartProvider'
 import ThemeProvider from './context/themeProvider'
 import ThemeWrapper from './context/ThemeWrapper'
 import './globals.css'
-import { AuthProvider } from './context/authProvider'
 
 const jetbrainsMono = JetBrains_Mono({
 	subsets: ['latin'],
@@ -50,10 +51,11 @@ export default function RootLayout({
 				<ThemeProvider>
 					<ThemeWrapper>
 						<AuthProvider>
-						<CartProvider>
-			
-							<main>{children}</main>
-						</CartProvider>
+							<CartProvider>
+								<ChatProvider>
+									<main>{children}</main>
+								</ChatProvider>
+							</CartProvider>
 						</AuthProvider>
 					</ThemeWrapper>
 				</ThemeProvider>

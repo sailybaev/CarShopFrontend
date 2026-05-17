@@ -6,9 +6,12 @@ import { formatPrice } from '@/lib/cars'
 import { ShoppingBag, Trash2, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import {createPortal} from 'react-dom'
+import { createPortal } from 'react-dom'
 
-export default function Cart() {
+interface CartProps {
+	onClose: () => void
+}
+export default function Cart({ onClose }: CartProps) {
 	const { items, removeFromCart } = useCart()
 	console.log(items)
 	return createPortal(
@@ -22,13 +25,11 @@ export default function Cart() {
 							{items.length}
 						</div>
 					</div>
-					<Button >
-						
-							<X className='hover:text-gray-500 h-8 w-8' />
-						
+					<Button onClick={onClose}>
+						<X className='hover:text-gray-500 h-8 w-8' />
 					</Button>
 				</header>
-				{items ? (
+				{items.length > 0 ? (
 					<section>
 						<div className='felx flex-col gap-6'>
 							{items.map(car => (
@@ -51,15 +52,16 @@ export default function Cart() {
 											{formatPrice(car.price)}
 										</h4>
 									</div>
+
+									<span>
+										<Button type='button' variant='ghost' className='hover:text-red-500' onClick={()=>removeFromCart(car.id)}>
+											<Trash2 />
+											Remove
+										</Button>
+									</span>
 								</div>
 							))}
 						</div>
-						<span>
-							<Button variant='ghost' className='hover:text-red-500'>
-								<Trash2 />
-								Remove
-							</Button>
-						</span>
 					</section>
 				) : (
 					<section className='px-8 py-20'>

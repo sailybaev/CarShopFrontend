@@ -18,8 +18,8 @@ export default function Footer() {
 	return (
 		<footer className='bg-primary border-t border-border text-primary-foreground'>
 			<div className='mx-auto px-8 py-20 '>
-				<div className='grid grid-cols-4 gap-8'>
-					<div className='col-span-2'>
+				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8'>
+					<div className='sm:col-span-2'>
 						<Link href='/' className='uppercase font-semibold '>CarHub</Link>
 						<p className='mt-3'>
 							Premium auto experience
