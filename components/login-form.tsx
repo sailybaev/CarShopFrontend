@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
+import { useAuthStore } from '@/store/authStore'
 import { RowsIcon } from '@phosphor-icons/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -20,7 +21,7 @@ export function LoginForm({
 }: React.ComponentProps<'div'>) {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const { Login } = useAuth()
+	const  Login  = useAuthStore(x=>x.Login)
 	const router = useRouter()
 
 	async function handleSubmit(e: React.FormEvent) {

@@ -1,9 +1,8 @@
-import { ChatProvider } from '@/lib/socket'
+import ChatConnect from '@/components/chatConnect'
 import { cn } from '@/lib/utils'
 import type { Metadata } from 'next'
 import { DM_Sans, Geist, Geist_Mono, JetBrains_Mono } from 'next/font/google'
-import { AuthProvider } from './context/authProvider'
-import CartProvider from './context/cartProvider'
+
 import ThemeProvider from './context/themeProvider'
 import ThemeWrapper from './context/ThemeWrapper'
 import './globals.css'
@@ -50,13 +49,8 @@ export default function RootLayout({
 			<body className='min-h-full flex flex-col'>
 				<ThemeProvider>
 					<ThemeWrapper>
-						<AuthProvider>
-							<CartProvider>
-								<ChatProvider>
-									<main>{children}</main>
-								</ChatProvider>
-							</CartProvider>
-						</AuthProvider>
+						<ChatConnect />
+						<main>{children}</main>
 					</ThemeWrapper>
 				</ThemeProvider>
 			</body>

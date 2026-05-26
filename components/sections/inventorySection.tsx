@@ -6,10 +6,10 @@ interface props{
 }
 export default function InventorySection({Cars}:props){
 return(
-	<section className='px-8 py-20 bg-secondary text-secondary-foreground'>
+	<section className='px-8 py-10 bg-secondary text-secondary-foreground'>
 		<div className='mx-auto'>
-			<p className='mb-12 uppercase font-semibold text-muted-foreground'>Showing {Cars.length} vehicles</p>
-			<div className='grid grid-cols-3 gap-10'>
+			<p className='mb-10 uppercase font-semibold text-muted-foreground'>Showing {Cars.length} vehicles</p>
+			<div className='grid  grid-cols-2 sm:grid-cols-3 gap-10'>
 				{Cars.map((car)=>(
 					 <CarCard key={car.id} car = {car} />
 				))}

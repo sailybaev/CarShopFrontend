@@ -2,6 +2,7 @@
 
 import { useAuth } from '@/app/context/authProvider'
 import { Conversation, convKey, useChat } from '@/lib/socket'
+import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Button } from './ui/button'
@@ -64,22 +65,26 @@ export default function Messenger() {
 	}
 
 	return (
-		<section className='px-8 py-20'>
-			<div className='grid h-175 grid-cols-[320px_1fr] border border-border'>
-				<aside className='border-r border-border'>
-					<div className='border-border border-b p-5'>
-						<p className='text-xs font-semibold uppercase text-muted-foreground'>
+		<section className=' px-4 py-8 sm:px-8 sm:py-12'>
+			<div className='mx-auto grid h-[75vh] max-w-6xl grid-cols-1 overflow-hidden rounded-md border border-border bg-background shadow-sm md:grid-cols-[320px_1fr]'>
+				<aside
+					className={`${selected ? 'hidden md:block' : 'block'} border-b border-border md:border-b-0 md:border-r`}
+				>
+					<header className='border-border border-b py-3.5 px-5'>
+						<p className='text-xs font-semibold uppercase tracking-widest text-muted-foreground'>
 							Messages
 						</p>
-						<h1 className='mt-1 text-2xl font-bold'>Chats</h1>
-						<div
-							className={`rounded-full ${connected ? ' fill-green-700' : 'fill-red'}`}
-						/>
-						<p className='mt-2 text-xs text-muted-foreground'>
-							{connected ? 'Connected' : 'Disconnected'}
-						</p>
-					</div>
-					<div>
+						<h1 className='mt-1 text-xl font-bold'>Chats</h1>
+						<div className='mt- flex items-center gap-2'>
+							<span
+								className={`h-2 w-2 rounded-full ${connected ? ' bg-green-600' : 'bg-red-500'}`}
+							/>
+							<p className=' text-sm text-muted-foreground'>
+								{connected ? 'Connected' : 'Disconnected'}
+							</p>
+						</div>
+					</header>
+					<div className='max-h-65 overflow-y-auto md:max-h-none'>
 						{conversations.map(conv => {
 							const isActive =
 								selected?.listingId === conv.listingId &&
@@ -89,20 +94,20 @@ export default function Messenger() {
 								<Button
 									key={`${conv.listingId}_${conv.otherUserId}`}
 									onClick={() => setSelected(conv)}
-									className={`flex w-full gap-4 border-b border-border p-4 text-left transition ${
-										isActive ? 'bg-secondary' : 'hover:bg-secondary/60'
+									className={`flex w-full h-20 items-center gap-4 border-b border-border p-4 text-left transition ${
+										isActive ? 'bg-secondary' : 'hover:bg-secondary/90'
 									}`}
 								>
 									<img
 										src={conv.listingImage}
 										alt={conv.listingTitle}
-										className='h-16 w-24 object-cover'
+										className='h-16 w-24 shrink-0 rounded-md object-cover'
 									/>
-									<div className='min-w-0'>
-										<p className='truncate font-semibold'>
+									<div className='min-w-0 '>
+										<p className='truncate font-semibold mt-1 text-muted-foreground'>
 											{conv.listingTitle}
 										</p>
-										<p className='mt-1 text-xs text-muted-foreground'>
+										<p className='mb-1 text-xs text-muted-foreground'>
 											Open Conversation
 										</p>
 									</div>
@@ -112,27 +117,40 @@ export default function Messenger() {
 					</div>
 				</aside>
 
-				<div className='flex min-w-0 flex-col'>
+				<div
+					className={`${!selected ? 'hidden md:flex' : 'flex'} min-w-0 flex-col md:flex`}
+				>
 					{!selected ? (
-						<div className='flex flex-1 items-center justify-center'>
+						<div className='flex flex-1 items-center justify-center p-6'>
 							<p className='text-muted-foreground'>Select a conversation</p>
 						</div>
 					) : (
 						<>
 							<header className='flex items-center gap-4 border-b border-border p-5'>
+								<Button
+									type='button'
+									variant='secondary'
+									onClick={() => setSelected(null)}
+									className='md:hidden rounded-md'
+								>
+									<ArrowLeft />
+									Chats
+								</Button>
 								<img
 									src={selected.listingImage}
 									alt={selected.listingTitle}
-									className='h-14 w-20 object-cover'
+									className='h-14 w-20 shrink-0 rounded-md object-cover'
 								/>
-								<div>
-									<p className='text-xs font-semibold uppercase text-muted-foreground'>
+								<div className='min-w-0'>
+									<p className='text-xs font-semibold uppercase tracking-widest text-muted-foreground'>
 										Conversation
 									</p>
-									<h2 className='text-xl font-bold'>{selected.listingTitle}</h2>
+									<h2 className='truncate text-xl font-bold'>
+										{selected.listingTitle}
+									</h2>
 								</div>
 							</header>
-							<div className='flex-1 overflow-y-auto p-6'>
+							<div className='flex-1 overflow-y-auto bg-muted/20 p-6'>
 								{currentMessages.length === 0 ? (
 									<div className='flex h-full items-center justify-center'>
 										<p className='text-muted-foreground'>No messages yet</p>
@@ -144,10 +162,10 @@ export default function Messenger() {
 										return (
 											<div
 												key={msg.id}
-												className={`mb-4 flex ${isMine} ? 'justify-end' : 'justify-start'`}
+												className={`mb-4 flex ${isMine ? 'justify-end' : 'justify-start'}`}
 											>
 												<div
-													className={`max-w-[70%] border border-border px-4 py-3 ${isMine ? 'bg-primary text-primary-foreground' : 'bg-secondary'}`}
+													className={`max-w-[85%] rounded-md text-sm shadow-sm sm:max-w-[70%] px-4 py-3 ${isMine ? 'bg-primary text-primary-foreground' : 'border border-border  bg-backgound'}`}
 												>
 													<p>{msg.message}</p>
 													<div className='mt-2 flex items-center gap-2 text-xs opacity-70'>
@@ -176,9 +194,13 @@ export default function Messenger() {
 									value={text}
 									onChange={e => setText(e.target.value)}
 									placeholder='Type a message...'
-									className='h-12 flex-1'
+									className='h-12 flex-1 rounded-md'
 								/>
-								<Button type='submit' disabled={!text.trim() || !connected}>
+								<Button
+									type='submit'
+									disabled={!text.trim() || !connected}
+									className='h-12 rounded-md px-5'
+								>
 									Send
 								</Button>
 							</form>

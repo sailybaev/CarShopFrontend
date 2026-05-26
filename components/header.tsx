@@ -3,7 +3,7 @@
 import { useAuth } from '@/app/context/authProvider'
 import { useCart } from '@/app/context/cartProvider'
 import { ThemeContext } from '@/app/context/themeProvider'
-import { Menu, Moon, ShoppingBag, Sun, X } from 'lucide-react'
+import { Menu, Moon, ShoppingBag, Sun, User, X } from 'lucide-react'
 import Link from 'next/link'
 import { useContext, useState } from 'react'
 import Cart from './cartDrawer'
@@ -71,6 +71,12 @@ export function Header() {
 						{theme === 'light' ? <Moon /> : <Sun />}
 					</Button>
 
+					<Button variant='outline' className='mr-2' asChild>
+						<Link href='/login'>
+							<User />
+						</Link>
+					</Button>
+
 					<Button className='hover:bg-primary/80 transition-colors hidden md:block'>
 						<Link
 							href='/contact'
@@ -90,7 +96,7 @@ export function Header() {
 			</div>
 			{isMenuOpen && (
 				<nav className='md:hidden py-4 px-8 sm:px-32 flex justify-between flex-col border-t border-border bg-secondary'>
-					<div className='flex flex-row sm:px-32 justify-between'>
+					<div className='flex flex-row sm:px-32 justify-between mb-2'>
 						{!user
 							? navLinks
 									.filter(link => link.href !== '/chats')
@@ -113,6 +119,7 @@ export function Header() {
 									</Link>
 								))}
 					</div>
+
 					<Button className='hover:bg-primary/80 transition-colors mt-2'>
 						<Link
 							href='/contact'
