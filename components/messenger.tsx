@@ -2,6 +2,7 @@
 
 import { useAuth } from '@/app/context/authProvider'
 import { Conversation, convKey, useChat } from '@/lib/socket'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
@@ -51,6 +52,12 @@ export default function Messenger() {
 					<p>Messages</p>
 					<h1 className='mt-3 text-4xl font-bold'>No conversation yet</h1>
 					<p>Start a conversation from a car listing page</p>
+					<Button
+						className='px-8 mt-4 text-md font-semibold uppercase hover:bg-white/10'
+						asChild
+					>
+						<Link href='/inventory'> Visit Our Store </Link>
+					</Button>
 				</div>
 			</section>
 		)
@@ -58,7 +65,7 @@ export default function Messenger() {
 
 	return (
 		<section className='px-8 py-20'>
-			<div className='grid h-[700px] grid-cols-[320px_1fr] border border-border'>
+			<div className='grid h-175 grid-cols-[320px_1fr] border border-border'>
 				<aside className='border-r border-border'>
 					<div className='border-border border-b p-5'>
 						<p className='text-xs font-semibold uppercase text-muted-foreground'>
@@ -86,9 +93,8 @@ export default function Messenger() {
 										isActive ? 'bg-secondary' : 'hover:bg-secondary/60'
 									}`}
 								>
-									
 									<img
-										src={conv.listingImage} 
+										src={conv.listingImage}
 										alt={conv.listingTitle}
 										className='h-16 w-24 object-cover'
 									/>

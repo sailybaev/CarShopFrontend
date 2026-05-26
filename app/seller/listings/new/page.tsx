@@ -84,7 +84,7 @@ export default function CreateNewListing() {
 		try {
 			setLoading(true)
 
-			const carResponse = await fetch('https://carshop.sailybaev.kz/api/car', {
+			const carResponse = await fetch('http://localhost:5107/api/car', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ export default function CreateNewListing() {
 			})
 
 			const listingResponse = await fetch(
-				'https://carshop.sailybaev.kz/api/listing',
+				'http://localhost:5107/api/listing',
 				{
 					method: 'POST',
 					headers: {

@@ -4,7 +4,7 @@ interface apiMoney {
 	amount: number
 	currency: string
 }
-const api = 'https://carshop.sailybaev.kz'
+const api = 'http://localhost:5107'
 interface apiCar {
 	id: string
 	brand: string

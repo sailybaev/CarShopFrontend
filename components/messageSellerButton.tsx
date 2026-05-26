@@ -17,7 +17,7 @@ interface Seller {
 	companyName: string
 }
 async function fetchSellerById(sellerId: string):Promise<Seller>{
-	const response = await fetch(`https://carshop.sailybaev.kz/seller/${sellerId}`)
+	const response = await fetch(`http://localhost:5107/seller/${sellerId}`)
 
 	if(!response.ok)
 		throw new Error('Failed to load seller')

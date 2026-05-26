@@ -40,7 +40,7 @@ export default function SellerListings() {
 			console.log('no sellerId')
 		}
 		async function getSellerListings() {
-			const response = await fetch(`https://carshop.sailybaev.kz/api/listing`)
+			const response = await fetch(`http://localhost:5107/api/listing`)
 
 			if (!response.ok) {
 				throw new Error('Failed')
@@ -57,7 +57,7 @@ export default function SellerListings() {
 
 	async function deleteListing(id: string){
 	if(!token) return
-	const response = await fetch(`https://carshop.sailybaev.kz/api/listing/${id}`, {
+	const response = await fetch(`http://localhost:5107/api/listing/${id}`, {
 		method: 'DELETE',
 		headers: {
 			Authorization: `Bearer ${token}`

@@ -23,17 +23,17 @@ export default function CarCard({ car }: props) {
 				)}
 				<div className='absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent' />
 				{car.featured && (
-					<div className='absolute left-0 top-5 bg-popover px-4 py-1.5 '>
+					<div className='absolute left-0 top-5 bg-popover px-2 sm:px-4 py-1.5 '>
 						Featured
 					</div>
 				)}
 				<div className='absolute bottom-5 right-5 text-white'>{car.year}</div>
 			</div>
-			<div className='border border-t-0 border-border p-6 pb-0'>
+			<div className='border border-t-0 border-border p-2 sm:p-6 pb-0'>
 				<p className='font-bold uppercase text-muted-foreground text-xs'>
 					{car.brand}
 				</p>
-				<h3 className='mt-2 text-xl font-bold'>{car.name}</h3>
+				<h3 className='mt-2 text-md sm:text-xl font-bold'>{car.name}</h3>
 				<p className='text-xs text-muted-foreground mt-2'>
 					{car.mileage}
 					<span className='mx-2 opacity-40'>.</span>
@@ -41,8 +41,8 @@ export default function CarCard({ car }: props) {
 					<span className='mx-2 opacity-40'>.</span>
 					{car.fuelType}
 				</p>
-				<div className='mt-5 flex justify-between items-center border-t border-border p-5'>
-					<p className='text-2xl font-bold'>{car.price}$</p>
+				<div className='mt-5 flex sm:justify-between items-center border-t border-border p-1 sm:p-5'>
+					<p className='text-md sm:text-2xl font-bold'>{car.price}$</p>
 					<Button variant='outline' className='px-8'>
 						Buy
 					</Button>

@@ -33,7 +33,7 @@ interface ApiListing {
 }
 
 async function getListing(id: string): Promise<ApiListing> {
-	const response = await fetch(`https://carshop.sailybaev.kz/api/listing/${id}`)
+	const response = await fetch(`http://localhost:5107/api/listing/${id}`)
 
 	if (!response.ok) throw new Error('Failed to load listing')
 
@@ -103,7 +103,7 @@ export default function EditListingForm({ listingId }: { listingId: string }) {
 
 		try {
 			const response = await fetch(
-				`https://carshop.sailybaev.kz/api/listing/${listingId}`,
+				`http://localhost:5107/api/listing/${listingId}`,
 				{
 					method: 'PUT',
 					headers: {

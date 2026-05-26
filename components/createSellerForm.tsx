@@ -28,7 +28,7 @@ export default function CreateSellerForm() {
 				router.push('/login')
 				return
 			}
-			const response = await fetch('https://carshop.sailybaev.kz/seller', {
+			const response = await fetch('http://localhost:5107/seller', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

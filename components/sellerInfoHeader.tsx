@@ -17,7 +17,7 @@ interface Seller {
 async function getSellerByUserId(userId: string): Promise<Seller> {
 	const sellerId = localStorage.getItem('sellerId')
 	const response = await fetch(
-		`https://carshop.sailybaev.kz/seller/${sellerId}`
+		`http://localhost:5107/seller/${sellerId}`
 	)
 
 	if (!response.ok) {

@@ -24,7 +24,7 @@ export default function About() {
 			</div>
 			<section className='px-8 py-20 pt-10'>
 				<div className='mx-auto'>
-					<div className='grid grid-cols-2 items-center gap-20'>
+					<div className=' md:grid grid-cols-2 items-center gap-20'>
 						<div className='relative aspect-4/3 overflow-hidden bg-muted'>
 							<Image
 								src='/carabout.jpg'
@@ -34,14 +34,14 @@ export default function About() {
 							/>
 						</div>
 						<div>
-							<p className='text-xs uppercase font-semibold text-muted-foreground'>
+							<p className='text-sm uppercase font-semibold text-muted-foreground mt-10'>
 								Our story
 							</p>
-							<h2 className='mt-2 text-4xl font-bold tracking-tight'>
+							<h2 className='mt-2  text-xl sm:text-4xl font-bold tracking-tight'>
 								Redifined Car Buying Experience
 							</h2>
 							<div className='mt-2 h-px w-full bg-accent'></div>
-							<div className='mt-10 space-y-6 text-muted-foreground text-lg'>
+							<div className='mt-10 space-y-6 text-muted-foreground text-md sm:text-lg'>
 								<p>
 									Founded in 2024, CarShop was born out of a desire to
 									revolutionize the way people buy cars. We understand that
@@ -65,7 +65,7 @@ export default function About() {
 					</div>
 				</div>
 			</section>
-			<section className='px-8 py-20 bg-primary text-white'>
+			<section className='px-8 py-10 bg-primary text-white'>
 				<div className='mx-auto flex justify-between'>
 					<h2>Ready to visit us?</h2>
 					<Button
