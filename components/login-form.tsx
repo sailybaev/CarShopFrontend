@@ -1,6 +1,5 @@
 'use client'
 
-import { useAuth } from '@/app/context/authProvider'
 import { Button } from '@/components/ui/button'
 import {
 	Field,

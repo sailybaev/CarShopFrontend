@@ -1,13 +1,15 @@
 'use client'
 
 import { useAuth } from '@/app/context/authProvider'
-import { useCart } from '@/app/context/cartProvider'
+
 import { ThemeContext } from '@/app/context/themeProvider'
 import { Menu, Moon, ShoppingBag, Sun, User, X } from 'lucide-react'
 import Link from 'next/link'
 import { useContext, useState } from 'react'
 import Cart from './cartDrawer'
 import { Button } from './ui/button'
+import { useCartStore } from '@/store/cartStore'
+import { useAuthStore } from '@/store/authStore'
 const navLinks = [
 	{ href: '/', label: 'home' },
 	{ href: '/about', label: 'about' },
@@ -18,8 +20,8 @@ const navLinks = [
 
 export function Header() {
 	const { theme, toggleTheme } = useContext(ThemeContext)
-	const { items } = useCart()
-	const { user } = useAuth()
+	const items = useCartStore(t=>t.items)
+	const user  = useAuthStore(x=>x.user)
 
 	const [isCartOpen, setIsCartOpen] = useState(false)
 	const [isMenuOpen, setIsMenuOpen] = useState(false)

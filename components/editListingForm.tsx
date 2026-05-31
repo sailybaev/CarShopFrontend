@@ -1,6 +1,5 @@
 'use client'
 
-import { useAuth } from '@/app/context/authProvider'
 import { Button } from '@/components/ui/button'
 import {
 	Field,
@@ -9,6 +8,7 @@ import {
 	FieldLabel
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import { useAuthStore } from '@/store/authStore'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
@@ -42,7 +42,7 @@ async function getListing(id: string): Promise<ApiListing> {
 
 export default function EditListingForm({ listingId }: { listingId: string }) {
 	const router = useRouter()
-	const { token } = useAuth()
+	const  token  = useAuthStore(x=>x.token)
 
 	const fileInputRef = useRef<HTMLInputElement | null>(null)
 

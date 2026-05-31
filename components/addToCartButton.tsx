@@ -1,7 +1,7 @@
 'use client'
 
-import { useCart } from '@/app/context/cartProvider'
 import { Car } from '@/lib/cars'
+import { useCartStore } from '@/store/cartStore'
 import { Check, ShoppingBag } from 'lucide-react'
 import { Button } from './ui/button'
 
@@ -14,7 +14,10 @@ export default function AddToCartButton({
 	variant = 'full',
 	car
 }: AddToCartButtonProps) {
-	const { addToCart, removeFromCart, isInCart } = useCart()
+	const addToCart = useCartStore(x => x.addToCart)
+	const removeFromCart = useCartStore(x => x.removeFromCart)
+  const isInCart = useCartStore(x=>x.isInCart)
+	
 	function handleClick(e: React.MouseEvent) {
 		e.preventDefault()
 		if (isInCart(Number(car.id))) {
@@ -31,7 +34,7 @@ export default function AddToCartButton({
 		)
 	}
 	return (
-		<Button onClick = {handleClick}>
+		<Button onClick={handleClick}>
 			{isInCart(Number(car.id)) ? (
 				<>
 					<Check />

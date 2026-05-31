@@ -3,6 +3,7 @@ import { useAuth } from '@/app/context/authProvider'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Button } from './ui/button'
+import { useAuthStore } from '@/store/authStore'
 
 interface Seller {
 	id: string
@@ -28,7 +29,7 @@ async function getSellerByUserId(userId: string): Promise<Seller> {
 }
 export default function SellerInfoHeader() {
 	const router = useRouter()
-	const { user } = useAuth()
+	const user  = useAuthStore(x=>x.user)
 
 	const [seller, setSeller] = useState<Seller | null>(null)
 	const [loading, setLoading] = useState(true)

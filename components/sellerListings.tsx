@@ -13,6 +13,7 @@ import {
 } from './ui/table'
 import { useAuth } from '@/app/context/authProvider'
 import Link from 'next/link'
+import { useAuthStore } from '@/store/authStore'
 interface Listings {
 	id: string
 	sellerId: string
@@ -30,7 +31,7 @@ interface Listings {
 export default function SellerListings() {
 	const [listings, setListing] = useState<Listings[]>([])
 	
-	const {token} = useAuth()
+	const token = useAuthStore(t=>t.token)
 
 	
 

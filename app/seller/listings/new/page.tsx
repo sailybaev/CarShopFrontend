@@ -1,6 +1,5 @@
 'use client'
 
-import { useAuth } from '@/app/context/authProvider'
 import { Button } from '@/components/ui/button'
 import {
 	Field,
@@ -9,6 +8,7 @@ import {
 	FieldLabel
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import { useAuthStore } from '@/store/authStore'
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 
@@ -44,7 +44,8 @@ export default function CreateNewListing() {
 	const [carDescription, setCarDescription] = useState('')
 
 	const router = useRouter()
-	const { token } = useAuth()
+	const token = useAuthStore(x => x.token)
+
 	const fileInputRef = useRef<HTMLInputElement | null>(null)
 
 	const [images, setImages] = useState<File[]>([])
@@ -112,16 +113,13 @@ export default function CreateNewListing() {
 				formData.append('carImages', image)
 			})
 
-			const listingResponse = await fetch(
-				'http://localhost:5107/api/listing',
-				{
-					method: 'POST',
-					headers: {
-						Authorization: `Bearer ${token}`
-					},
-					body: formData
-				}
-			)
+			const listingResponse = await fetch('http://localhost:5107/api/listing', {
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${token}`
+				},
+				body: formData
+			})
 
 			if (!listingResponse.ok) throw new Error('Failed to create listing')
 

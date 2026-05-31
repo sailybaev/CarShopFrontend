@@ -1,6 +1,5 @@
 'use client'
 
-import { useAuth } from '@/app/context/authProvider'
 import { Button } from '@/components/ui/button'
 import {
 	Field,
@@ -20,6 +19,7 @@ import {
 	SelectTrigger,
 	SelectValue
 } from './ui/select'
+import { useAuthStore } from '@/store/authStore'
 
 export function SignupForm({
 	className,
@@ -29,7 +29,7 @@ export function SignupForm({
 	const [password, setPassword] = useState('')
 	const [role, setRole] = useState('')
 	const [error, setError] = useState('')
-	const { Register } = useAuth()
+	const Register = useAuthStore(x=>x.Register)
 	const router = useRouter()
 	const roles = [
 		{ value: 'customer', label: 'Customer - want to Buy a car' },

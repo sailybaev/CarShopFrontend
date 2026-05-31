@@ -4,6 +4,7 @@ import { useAuth } from '@/app/context/authProvider'
 import { useChat } from '@/lib/socket'
 import { useRouter } from 'next/navigation'
 import { Button } from './ui/button'
+import { useAuthStore } from '@/store/authStore'
 
 interface MessageSellerButtonProps {
 	listingId: string
@@ -28,7 +29,7 @@ export default function MessageSellerButton({
 	listingId, sellerId, listingTitle, listingImage
 }:MessageSellerButtonProps){
 	const router = useRouter()
-	const {user} = useAuth()
+	const user = useAuthStore(x=>x.user)
 	const {addConversation} = useChat()
 
 	async function handleMessageSeller(){

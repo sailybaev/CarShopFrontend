@@ -1,6 +1,5 @@
 'use client'
 
-import { useAuth } from '@/app/context/authProvider'
 import { Button } from '@/components/ui/button'
 import {
 	Field,
@@ -9,6 +8,7 @@ import {
 	FieldLabel
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import { useAuthStore } from '@/store/authStore'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -19,7 +19,8 @@ export default function CreateSellerForm() {
 	const [companyAddress, setCompanyAddress] = useState('')
 	const [companyPhoneNumber, setCompanyPhoneNumber] = useState('')
 	const [companyEmail, setCompanyEmail] = useState('')
-	const { user, token } = useAuth()
+	const user = useAuthStore(x => x.user)
+	const token = useAuthStore(x => x.token)
 
 	async function handleSubmit(e: React.FormEvent) {
 		e.preventDefault()

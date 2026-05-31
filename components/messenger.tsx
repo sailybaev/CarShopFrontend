@@ -7,9 +7,10 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
+import { useAuthStore } from '@/store/authStore'
 
 export default function Messenger() {
-	const { user } = useAuth()
+	const user = useAuthStore(x=>x.user)
 	const {
 		conversations,
 		messages,
