@@ -1,18 +1,18 @@
 import { AuthUser, useAuthStore } from '@/store/authStore'
-import { vi, beforeEach, describe } from 'vitest'
+import { vi, beforeEach, describe, afterEach, it } from 'vitest'
 
 function createMockJwt(id: string, email: string, role: string): string {
-  const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }))
-  const payload = btoa(
-    JSON.stringify({
-      'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier':
-        id,
-      'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress':
-        email,
-      'http://schemas.microsoft.com/ws/2008/06/identity/claims/role': role,
-    })
-  )
-  return `${header}.${payload}.fakesignature`
+	const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }))
+	const payload = btoa(
+		JSON.stringify({
+			'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier':
+				id,
+			'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress':
+				email,
+			'http://schemas.microsoft.com/ws/2008/06/identity/claims/role': role
+		})
+	)
+	return `${header}.${payload}.fakesignature`
 }
 
 const testUser: AuthUser = {
@@ -21,24 +21,30 @@ const testUser: AuthUser = {
 	role: 'customer'
 }
 beforeEach(() => {
-	
-		useAuthStore.setState({ user: null, token: null })
-		vi.stubGlobal('fetch', vi.fn())
-	
+	useAuthStore.setState({ user: null, token: null })
+	vi.stubGlobal('fetch', vi.fn())
 })
-afterEach(()=>{
+
+afterEach(() => {
 	vi.unstubAllGlobals()
 })
-describe('Login', ()=>{
-	it('test1', async ()=>{
+describe('Login', () => {
+	it('test1', async () => {
 		const mockToken = createMockJwt('5', 'test@mail.com', 'customer')
 
-		vi.mocked(fetch).mockResolvedValueOnce({ok: true, text: vi.fn().mockResolvedValueOnce(mockToken)} as unknown as Response) 
+		vi.mocked(fetch).mockResolvedValueOnce({
+			ok: true,
+			text: vi.fn().mockResolvedValueOnce(mockToken)
+		} as unknown as Response)
 
-		await useAuthStore.getState().Login('test@mail.com','123')
-		const token =  useAuthStore.getState().token
+		await useAuthStore.getState().Login('test@mail.com', '123')
+		const token = useAuthStore.getState().token
 		const user = useAuthStore.getState().user
-		expect(user).toMatchObject({id: '5', email:'test@mail.com', role:'customer'})
+		expect(user).toMatchObject({
+			id: '5',
+			email: 'test@mail.com',
+			role: 'customer'
+		})
 		expect(token).toBe(mockToken)
 	})
 })
@@ -52,7 +58,7 @@ describe('useAuthStore initial state', () => {
 	})
 })
 describe('Logout tests', () => {
-	it('user to be null', () => {	
+	it('user to be null', () => {
 		useAuthStore.setState({
 			user: testUser,
 			token: '123'
