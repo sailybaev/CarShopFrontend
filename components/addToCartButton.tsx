@@ -21,7 +21,7 @@ export default function AddToCartButton({
 	function handleClick(e: React.MouseEvent) {
 		e.preventDefault()
 		if (isInCart(Number(car.id))) {
-			removeFromCart(Number(car.id))
+			removeFromCart(car.id)
 		} else {
 			addToCart(car)
 		}
@@ -43,7 +43,7 @@ export default function AddToCartButton({
 			) : (
 				<>
 					<ShoppingBag />
-					<p>Add ro Cart</p>
+					<p>Add to Cart</p>
 				</>
 			)}
 		</Button>
