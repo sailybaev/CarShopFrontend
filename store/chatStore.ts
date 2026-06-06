@@ -137,7 +137,8 @@ export const useChatStore = create<ChatContextType>()(
 								new Date(a.createdAt).getTime() -
 								new Date(b.createdAt).getTime()
 						)
-						return { ...prev, [key]: merged }
+						
+						return { ...prev, messages:{...prev.messages, [key]: merged} }
 					})
 				} catch {}
 			},
