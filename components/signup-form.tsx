@@ -8,10 +8,17 @@ import {
 	FieldLabel
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import {
+	ParseZodErrors,
+	SignUpFormSchema,
+	type FieldErrors
+} from '@/lib/schemas'
 import { cn } from '@/lib/utils'
+import { useAuthStore } from '@/store/authStore'
 import { RowsIcon } from '@phosphor-icons/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import z from 'zod'
 import {
 	Select,
 	SelectContent,
@@ -19,7 +26,8 @@ import {
 	SelectTrigger,
 	SelectValue
 } from './ui/select'
-import { useAuthStore } from '@/store/authStore'
+
+type SignUpFileds = z.infer<typeof SignUpFormSchema>
 
 export function SignupForm({
 	className,
@@ -29,7 +37,10 @@ export function SignupForm({
 	const [password, setPassword] = useState('')
 	const [role, setRole] = useState('')
 	const [error, setError] = useState('')
-	const Register = useAuthStore(x=>x.Register)
+
+	const [errors, setErrors] = useState<FieldErrors<SignUpFileds>>({})
+
+	const Register = useAuthStore(x => x.Register)
 	const router = useRouter()
 	const roles = [
 		{ value: 'customer', label: 'Customer - want to Buy a car' },
@@ -37,6 +48,16 @@ export function SignupForm({
 	]
 	async function handleSubmit(e: React.FormEvent) {
 		e.preventDefault()
+		const result = SignUpFormSchema.safeParse({
+			email,
+			password,
+			role
+		})
+		if (!result.success) {
+			setErrors(ParseZodErrors<SignUpFileds>(result.error))
+			return
+		}
+		setErrors({})
 		try {
 			await Register(email, password, role)
 			router.push('/inventory')
@@ -47,6 +68,7 @@ export function SignupForm({
 	}
 	return (
 		<div className={cn('flex flex-col gap-6', className)} {...props}>
+			{errors.email && <p>{errors.email}</p>}
 			<form onSubmit={handleSubmit}>
 				<FieldGroup>
 					<div className='flex flex-col items-center gap-2 text-center'>
@@ -57,7 +79,7 @@ export function SignupForm({
 							<div className='flex size-8 items-center justify-center rounded-md'>
 								<RowsIcon className='size-6' />
 							</div>
-							<span className='sr-only'>Acme Inc.{error}</span>
+							<span className='sr-only'>Acme Inc.</span>
 						</a>
 						<h1 className='text-xl font-bold'>Welcome to Acme Inc.</h1>
 						<FieldDescription>
@@ -70,7 +92,6 @@ export function SignupForm({
 							id='email'
 							type='email'
 							placeholder='m@example.com'
-							required
 							value={email}
 							onChange={e => setEmail(e.target.value)}
 						/>
@@ -81,7 +102,6 @@ export function SignupForm({
 							id='password'
 							type='password'
 							placeholder='••••••••'
-							required
 							value={password}
 							onChange={e => setPassword(e.target.value)}
 						/>

@@ -22,13 +22,18 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
   unobserve: vi.fn(),
   disconnect: vi.fn(),
 }))
-
+class MockIntersectObserver {
+  observe(){}
+  unobserve(){}
+  disconnect(){}
+}
 // Мок IntersectionObserver
-global.IntersectionObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}))
+// global.IntersectionObserver = vi.fn().mockImplementation(() => ({
+//   observe: vi.fn(),
+//   unobserve: vi.fn(),
+//   disconnect: vi.fn(),
+// }))
+global.IntersectionObserver = MockIntersectObserver as any
 
 // Очищаем localStorage перед каждым тестом
 beforeEach(() => {

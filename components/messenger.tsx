@@ -1,16 +1,15 @@
 'use client'
 
-import { useAuth } from '@/app/context/authProvider'
 import { Conversation, convKey, useChat } from '@/lib/socket'
+import { useAuthStore } from '@/store/authStore'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
-import { useAuthStore } from '@/store/authStore'
 
 export default function Messenger() {
-	const user = useAuthStore(x=>x.user)
+	const user = useAuthStore(x => x.user)
 	const {
 		conversations,
 		messages,
@@ -58,7 +57,7 @@ export default function Messenger() {
 						className='px-8 mt-4 text-md font-semibold uppercase hover:bg-white/10'
 						asChild
 					>
-						<Link href='/inventory'> Visit Our Store </Link>
+						<Link href='/inventory'>Visit Our Store </Link>
 					</Button>
 				</div>
 			</section>
