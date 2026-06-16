@@ -3,9 +3,12 @@ import { cn } from '@/lib/utils'
 import type { Metadata } from 'next'
 import { DM_Sans, Geist, Geist_Mono, JetBrains_Mono } from 'next/font/google'
 
+import { QueryClientProvider } from '@tanstack/react-query'
 import ThemeProvider from './context/themeProvider'
 import ThemeWrapper from './context/ThemeWrapper'
 import './globals.css'
+import { queryClient } from '@/lib/queryClient'
+import QueryProvider from '@/store/queryProvider'
 
 const jetbrainsMono = JetBrains_Mono({
 	subsets: ['latin'],
@@ -49,9 +52,10 @@ export default function RootLayout({
 			<body className='min-h-full flex flex-col'>
 				<ThemeProvider>
 					<ThemeWrapper>
-						
 						<ChatConnect />
-						<main>{children}</main>
+						<QueryProvider >
+							<main>{children}</main>
+						</QueryProvider>
 					</ThemeWrapper>
 				</ThemeProvider>
 			</body>

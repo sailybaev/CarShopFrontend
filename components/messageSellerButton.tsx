@@ -1,10 +1,11 @@
 'use client'
 
 import { useAuth } from '@/app/context/authProvider'
-import { useChat } from '@/lib/socket'
+import { useChatStore } from '@/store/chatStore'
 import { useRouter } from 'next/navigation'
 import { Button } from './ui/button'
 import { useAuthStore } from '@/store/authStore'
+
 
 interface MessageSellerButtonProps {
 	listingId: string
@@ -30,7 +31,7 @@ export default function MessageSellerButton({
 }:MessageSellerButtonProps){
 	const router = useRouter()
 	const user = useAuthStore(x=>x.user)
-	const {addConversation} = useChat()
+	const {addConversations} = useChatStore()
 
 	async function handleMessageSeller(){
 		if(!user){
@@ -38,7 +39,8 @@ export default function MessageSellerButton({
 			return
 		}
 		const seller = await fetchSellerById(sellerId)
-		addConversation({listingId, otherUserId: seller.userId, listingTitle, listingImage: listingImage ?? ''})
+		
+		addConversations({listingId, otherUserId: seller.userId, listingTitle, listingImage: listingImage ?? ''}, user.id)
 		router.push(`/chats?listing=${listingId}&user=${seller.userId}`)
 	}
 	return(

@@ -8,22 +8,30 @@ import {
 	FieldLabel
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import { CreateSellerFormSchema } from '@/lib/schemas'
 import { useAuthStore } from '@/store/authStore'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+
+import { useForm } from 'react-hook-form'
+import z from 'zod'
+
+type CreateSellerData = z.infer<typeof CreateSellerFormSchema>
 
 export default function CreateSellerForm() {
 	const router = useRouter()
-	const [companyName, setCompanyName] = useState('')
-	const [companyCity, setCompanyCity] = useState('')
-	const [companyAddress, setCompanyAddress] = useState('')
-	const [companyPhoneNumber, setCompanyPhoneNumber] = useState('')
-	const [companyEmail, setCompanyEmail] = useState('')
 	const user = useAuthStore(x => x.user)
 	const token = useAuthStore(x => x.token)
 
-	async function handleSubmit(e: React.FormEvent) {
-		e.preventDefault()
+	const {
+		register,
+		handleSubmit,
+		formState: { errors, isSubmitting }
+	} = useForm<CreateSellerData>({
+		resolver: zodResolver(CreateSellerFormSchema)
+	})
+
+	async function onSubmit(data: CreateSellerData) {
 		try {
 			if (!user || !token) {
 				router.push('/login')
@@ -36,12 +44,12 @@ export default function CreateSellerForm() {
 					Authorization: `Bearer ${token}`
 				},
 				body: JSON.stringify({
-					companyName,
+					companyName: data.companyName,
 					UserID: user.id,
-					CompanyCity: companyCity,
-					CompanyAddress: companyAddress,
-					CompanyPhoneNumber: companyPhoneNumber,
-					CompanyEmail: companyEmail
+					CompanyCity: data.city,
+					CompanyAddress: data.address,
+					CompanyPhoneNumber: data.mobilePhone,
+					CompanyEmail: data.email
 				})
 			})
 			if (!response.ok) {
@@ -55,7 +63,13 @@ export default function CreateSellerForm() {
 	}
 	return (
 		<div>
-			<form onSubmit={handleSubmit}>
+			{errors.companyName && <p>{errors.companyName.message}</p>}
+			{errors.address && <p>{errors.address.message}</p>}
+			{errors.city && <p>{errors.city.message}</p>}
+			{errors.email && <p>{errors.email.message}</p>}
+			{errors.mobilePhone && <p>{errors.mobilePhone.message}</p>}
+
+			<form onSubmit={handleSubmit(onSubmit)}>
 				<FieldGroup>
 					<div className='flex flex-col items-center gap-2 text-center'>
 						<h1 className='text-xl font-bold'>Create Private Seller Profile</h1>
@@ -66,61 +80,53 @@ export default function CreateSellerForm() {
 							Company Name or Full Name
 						</FieldLabel>
 						<Input
-							id='sellerCompanyName'
+							id='companyName'
 							type='text'
 							placeholder='BMW Salon or John Smith'
-							value={companyName}
-							onChange={e => setCompanyName(e.target.value)}
-							required
+							{...register('companyName')}
 						/>
 					</Field>
 					<Field>
 						<FieldLabel htmlFor='city'>City</FieldLabel>
 						<Input
-							id='sellerCity'
+							id='city'
 							type='text'
 							placeholder='Prague'
-							value={companyCity}
-							onChange={e => setCompanyCity(e.target.value)}
-							required
+							{...register('city')}
 						/>
 					</Field>
 					<Field>
 						<FieldLabel htmlFor='companyAdress'>Company Adress</FieldLabel>
 						<Input
-							id='sellerAdress'
+							id='companyAdress'
 							type='text'
 							placeholder='Dlouha 234'
-							value={companyAddress}
-							onChange={e => setCompanyAddress(e.target.value)}
-							required
+							{...register('address')}
 						/>
 					</Field>
 					<Field>
 						<FieldLabel htmlFor='mobilePhone'>Mobile Phone</FieldLabel>
 						<Input
-							id='sellerPhone'
+							id='mobilePhone'
 							type='text'
 							placeholder='+420 000-000-000'
-							value={companyPhoneNumber}
-							onChange={e => setCompanyPhoneNumber(e.target.value)}
-							required
+							{...register('mobilePhone')}
 						/>
 					</Field>
 					<Field>
 						<FieldLabel htmlFor='email'>Email</FieldLabel>
 						<Input
-							id='sellerEmail'
+							id='email'
 							type='email'
 							placeholder='m@example.com'
-							value={companyEmail}
-							onChange={e => setCompanyEmail(e.target.value)}
-							required
+							{...register('email')}
 						/>
 					</Field>
 
 					<Field>
-						<Button type='submit'>Create</Button>
+						<Button type='submit' disabled={isSubmitting}>
+							{isSubmitting ? 'Creating...' : 'Create'}
+						</Button>
 					</Field>
 				</FieldGroup>
 			</form>

@@ -5,10 +5,9 @@ import InventoryHeader from '@/components/inventoryHeader'
 import InventorySection from '@/components/sections/inventorySection'
 import { fetchListing } from '@/lib/api'
 import { Car } from '@/lib/cars'
+import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
-import { Suspense, useEffect, useState } from 'react'
-
-
+import { Suspense } from 'react'
 
 function filterCars(allCars: Car[], brand: string): Car[] {
 	return allCars.filter(car => {
@@ -39,18 +38,21 @@ function sortCars(filteredCars: Car[], sort: string): Car[] {
 	return sorted
 }
 
-export default  function InventoryPage() {
-	const params =  useSearchParams()
-
+export default function InventoryPage() {
+	const params = useSearchParams()
+	const { data, isPending, isError, error, isFetching, refetch } = useQuery<
+		Car[]
+	>({
+		queryKey: ['listings'],
+		queryFn: fetchListing,
+		staleTime: 60000
+	})
 	const brand = params.get('brand') ?? 'All'
-	const [allCars, setAllcars] = useState<Car[]>([])
+
 	const sort = params.get('sort') ?? 'price'
-	const filtered = filterCars(allCars, brand)
+	const filtered = filterCars(data ?? [], brand)
 	const sorted = sortCars(filtered, sort)
 
-	useEffect(() => {
-		fetchListing().then(c => setAllcars(c))
-	}, [])
 	return (
 		<>
 			<InventoryHeader

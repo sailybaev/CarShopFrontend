@@ -8,16 +8,13 @@ import {
 	FieldLabel
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import {
-	ParseZodErrors,
-	SignUpFormSchema,
-	type FieldErrors
-} from '@/lib/schemas'
+import { SignUpFormSchema } from '@/lib/schemas'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/store/authStore'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { RowsIcon } from '@phosphor-icons/react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import z from 'zod'
 import {
 	Select,
@@ -27,18 +24,18 @@ import {
 	SelectValue
 } from './ui/select'
 
-type SignUpFileds = z.infer<typeof SignUpFormSchema>
+type SignUpData = z.infer<typeof SignUpFormSchema>
 
-export function SignupForm({
+export default function SignupForm({
 	className,
 	...props
 }: React.ComponentProps<'div'>) {
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
-	const [role, setRole] = useState('')
-	const [error, setError] = useState('')
-
-	const [errors, setErrors] = useState<FieldErrors<SignUpFileds>>({})
+	const {
+		register,
+		handleSubmit,
+		setValue,
+		formState: { errors, isSubmitting }
+	} = useForm<SignUpData>({ resolver: zodResolver(SignUpFormSchema) })
 
 	const Register = useAuthStore(x => x.Register)
 	const router = useRouter()
@@ -46,30 +43,17 @@ export function SignupForm({
 		{ value: 'customer', label: 'Customer - want to Buy a car' },
 		{ value: 'privateSeller', label: 'Private Seller - want to Sell a car' }
 	]
-	async function handleSubmit(e: React.FormEvent) {
-		e.preventDefault()
-		const result = SignUpFormSchema.safeParse({
-			email,
-			password,
-			role
-		})
-		if (!result.success) {
-			setErrors(ParseZodErrors<SignUpFileds>(result.error))
-			return
-		}
-		setErrors({})
+	async function onSubmit(data: SignUpData) {
 		try {
-			await Register(email, password, role)
+			await Register(data.email, data.password, data.role)
 			router.push('/inventory')
 		} catch (error: unknown) {
 			console.log(error)
-			setError(error instanceof Error ? error.message : '')
 		}
 	}
 	return (
 		<div className={cn('flex flex-col gap-6', className)} {...props}>
-			{errors.email && <p>{errors.email}</p>}
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit(onSubmit)}>
 				<FieldGroup>
 					<div className='flex flex-col items-center gap-2 text-center'>
 						<a
@@ -92,9 +76,9 @@ export function SignupForm({
 							id='email'
 							type='email'
 							placeholder='m@example.com'
-							value={email}
-							onChange={e => setEmail(e.target.value)}
+							{...register('email')}
 						/>
+						{errors.email && <p>{errors.email.message}</p>}
 					</Field>
 					<Field>
 						<FieldLabel htmlFor='password'>Password</FieldLabel>
@@ -102,15 +86,19 @@ export function SignupForm({
 							id='password'
 							type='password'
 							placeholder='••••••••'
-							value={password}
-							onChange={e => setPassword(e.target.value)}
+							{...register('password')}
 						/>
 					</Field>
+					{errors.password && <p>{errors.password.message}</p>}
 					<Field>
 						<FieldLabel htmlFor='role'>Role</FieldLabel>
-						<Select value={role} onValueChange={setRole}>
+						<Select
+							onValueChange={value =>
+								setValue('role', value as SignUpData['role'])
+							}
+						>
 							<SelectTrigger id='role'>
-								<SelectValue />
+								<SelectValue placeholder='Select role' />
 							</SelectTrigger>
 							<SelectContent>
 								{roles.map(r => (
@@ -121,8 +109,11 @@ export function SignupForm({
 							</SelectContent>
 						</Select>
 					</Field>
+					{errors.role && <p>{errors.role.message}</p>}
 					<Field>
-						<Button type='submit'>Create Account</Button>
+						<Button type='submit' disabled={isSubmitting}>
+							Create Account
+						</Button>
 					</Field>
 				</FieldGroup>
 			</form>

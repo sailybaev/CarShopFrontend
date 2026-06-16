@@ -127,14 +127,13 @@ export default async function CarDetail({ params }: props) {
 									</Button>
 									<AddToCartButton car={car} />
 
-
 									<MessageSellerButton
 										listingId={car.id}
 										sellerId={car.sellerId}
 										listingTitle={`${car.brand} ${car.name}`}
 										listingImage={car.image}
 									/>
-									
+
 									<p className='text-xs text-muted-foreground text-center'>
 										No obligation * Respond within 24 hours
 									</p>

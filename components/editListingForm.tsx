@@ -8,9 +8,11 @@ import {
 	FieldLabel
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import { EditListingSchema, FieldErrors, ParseZodErrors } from '@/lib/schemas'
 import { useAuthStore } from '@/store/authStore'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
+import z from 'zod'
 
 interface ApiListing {
 	id: string
@@ -31,6 +33,7 @@ interface ApiListing {
 		}
 	}
 }
+type EditListingFields = z.infer<typeof EditListingSchema>
 
 async function getListing(id: string): Promise<ApiListing> {
 	const response = await fetch(`http://localhost:5107/api/listing/${id}`)
@@ -42,7 +45,7 @@ async function getListing(id: string): Promise<ApiListing> {
 
 export default function EditListingForm({ listingId }: { listingId: string }) {
 	const router = useRouter()
-	const  token  = useAuthStore(x=>x.token)
+	const token = useAuthStore(x => x.token)
 
 	const fileInputRef = useRef<HTMLInputElement | null>(null)
 
@@ -54,6 +57,8 @@ export default function EditListingForm({ listingId }: { listingId: string }) {
 	const [newPreviews, setNewPreviews] = useState<string[]>([])
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState('')
+
+	const [errors, setErrors] = useState<FieldErrors<EditListingFields>>({})
 
 	useEffect(() => {
 		async function loadListing() {
@@ -95,6 +100,16 @@ export default function EditListingForm({ listingId }: { listingId: string }) {
 
 	async function handleSubmit(e: React.FormEvent) {
 		e.preventDefault()
+		const result = EditListingSchema.safeParse({
+			city,
+			description
+		})
+		if (!result.success) {
+			setErrors(ParseZodErrors<EditListingFields>(result.error))
+			return
+		}
+
+		setErrors({})
 
 		if (!token) {
 			setError('You must be logged in')
@@ -133,6 +148,8 @@ export default function EditListingForm({ listingId }: { listingId: string }) {
 	return (
 		<section className='px-8 py-20'>
 			<div className='mx-auto max-w-2xl'>
+				{errors.city && <p>{errors.city}</p>}
+			{errors.description && <p>{errors.description}</p>}
 				<form onSubmit={handleSubmit}>
 					<FieldGroup>
 						<div className='text-center'>
