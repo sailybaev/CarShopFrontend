@@ -8,16 +8,18 @@ import { Button } from './ui/button'
 interface AddToCartButtonProps {
 	variant?: 'full' | 'icon'
 	car: Car
+	className?: string
 }
 
 export default function AddToCartButton({
 	variant = 'full',
-	car
+	car,
+	className
 }: AddToCartButtonProps) {
 	const addToCart = useCartStore(x => x.addToCart)
 	const removeFromCart = useCartStore(x => x.removeFromCart)
-  const isInCart = useCartStore(x=>x.isInCart)
-	
+	const isInCart = useCartStore(x => x.isInCart)
+
 	function handleClick(e: React.MouseEvent) {
 		e.preventDefault()
 		if (isInCart(Number(car.id))) {
@@ -26,24 +28,36 @@ export default function AddToCartButton({
 			addToCart(car)
 		}
 	}
+
 	if (variant === 'icon') {
 		return (
-			<Button onClick={handleClick}>
+			<Button
+				size='icon'
+				variant='outline'
+				className={className}
+				onClick={handleClick}
+			>
 				{isInCart(Number(car.id)) ? <Check /> : <ShoppingBag />}
 			</Button>
 		)
 	}
+
 	return (
-		<Button onClick={handleClick}>
+		<Button
+			size='lg'
+			variant='outline'
+			className={`h-14 w-full ${className ?? ''}`}
+			onClick={handleClick}
+		>
 			{isInCart(Number(car.id)) ? (
 				<>
 					<Check />
-					<p>Added</p>
+					<span>Added</span>
 				</>
 			) : (
 				<>
 					<ShoppingBag />
-					<p>Add to Cart</p>
+					<span>Add to Cart</span>
 				</>
 			)}
 		</Button>

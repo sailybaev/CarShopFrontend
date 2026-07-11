@@ -18,51 +18,44 @@ export default function HeroSection() {
 					<source src='/videoback.mp4' type='video/mp4' />
 				</video>
 
-				<div className='absolute inset-0 bg-black/50 ' />
-			</div>
+			<div className='absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/30' />
+		</div>
 
 			<motion.div
-				className='container relative z-10 mx-auto px-8 '
+				className='container relative z-10 mx-auto px-6 md:px-12'
 				initial={{ opacity: 0, y: 40 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.8 }}
 			>
-				<div className='max-w-full'>
-					<p className=' text-xs md:text-lg font-semibold uppercase text-primary-foreground'>
+				<div className='max-w-3xl text-center md:text-left pt-16'>
+					<p className='text-xs md:text-sm font-semibold uppercase tracking-[0.2em] text-white/80'>
 						Premium auto experience
 					</p>
 
-					<h1 className='mt-5  text-3xl md:text-5xl font-bold text-primary-foreground uppercase'>
+					<h1 className='mt-5 text-4xl md:text-6xl lg:text-7xl font-bold text-white uppercase tracking-tight'>
 						Exceptional vehicles.
 						<br />
 						Unmatched service.
 					</h1>
 
-					<div className='mt-8 flex flex-col sm:flex-row items-center gap-6 '>
+					<div className='mt-10 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4'>
 						<Button
 							size='lg'
-							variant='secondary'
-							className='h-14 px-10 text-sm font-semibold uppercase w-full sm:w-auto'
+							className='h-14 px-10 bg-white text-black hover:bg-white/90 w-full sm:w-auto'
 							asChild
 						>
-							<Link
-								href='/inventory'
-								className='px-8 text-sm font-semibold uppercase'
-							>
-								Explore Our Inventory
+							<Link href='/inventory'>
+								Explore Inventory
 							</Link>
 						</Button>
 
 						<Button
 							size='lg'
-							variant='ghost'
-							className='h-14 px-10 text-sm font-semibold uppercase text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground w-full sm:w-auto'
+							variant='outline'
+							className='h-14 px-10 border-white/30 text-white bg-transparent hover:bg-white/10 hover:text-white hover:border-white w-full sm:w-auto'
 							asChild
 						>
-							<Link
-								href='/contact'
-								className='px-8 text-sm font-semibold uppercase'
-							>
+							<Link href='/contact'>
 								Book a Call
 							</Link>
 						</Button>

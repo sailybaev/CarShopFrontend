@@ -1,5 +1,5 @@
 import Messenger from '@/components/messenger'
-import { useChat } from '@/lib/socket'
+import { useChatStore } from '@/store/chatStore'
 import { useAuthStore } from '@/store/authStore'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { vi } from 'vitest'
@@ -9,14 +9,12 @@ const mockSendMessage = vi.fn()
 const mockJoinConversation = vi.fn()
 const mockLeaveConversation = vi.fn()
 
-
-
-vi.mock('@/lib/socket', () => ({
+vi.mock('@/store/chatStore', () => ({
 	convKey: (listingId: string, otherUserId: string) =>
-		`${listingId}_${otherUserId}`, 
-	useChat: vi.fn()
+		`${listingId}_${otherUserId}`,
+	useChatStore: vi.fn()
 }))
-const mockUseChat = vi.mocked(useChat)
+const mockUseChatStore = vi.mocked(useChatStore)
 const conversation = {
 	listingId: 'car1',
 	otherUserId: 'user2',
@@ -46,7 +44,7 @@ beforeEach(() => {
 		token: 'token'
 	})
 
-	mockUseChat.mockReturnValue({
+	mockUseChatStore.mockReturnValue({
 		conversations: [],
 		messages: {},
 		loadHistory: mockLoadHistory,
@@ -54,7 +52,7 @@ beforeEach(() => {
 		joinConversation: mockJoinConversation,
 		leaveConversation: mockLeaveConversation,
 		connected: false
-	})
+	} as unknown as ReturnType<typeof useChatStore>)
 })
 
 describe('Messenger', () => {
@@ -69,7 +67,7 @@ describe('Messenger', () => {
 	})
 
 	it('renders conversations list', () => {
-		mockUseChat.mockReturnValue({
+		mockUseChatStore.mockReturnValue({
 			conversations: [conversation],
 			messages: {},
 			loadHistory: mockLoadHistory,
@@ -77,7 +75,7 @@ describe('Messenger', () => {
 			joinConversation: mockJoinConversation,
 			leaveConversation: mockLeaveConversation,
 			connected: true
-		})
+		} as unknown as ReturnType<typeof useChatStore>)
 
 		render(<Messenger />)
 
@@ -88,7 +86,7 @@ describe('Messenger', () => {
 	})
 
 	it('selects conversation and calls loadHistory and joinConversation', async () => {
-		mockUseChat.mockReturnValue({
+		mockUseChatStore.mockReturnValue({
 			conversations: [conversation],
 			messages: {},
 			loadHistory: mockLoadHistory,
@@ -96,7 +94,7 @@ describe('Messenger', () => {
 			joinConversation: mockJoinConversation,
 			leaveConversation: mockLeaveConversation,
 			connected: true
-		})
+		} as unknown as ReturnType<typeof useChatStore>)
 
 		render(<Messenger />)
 
@@ -106,7 +104,7 @@ describe('Messenger', () => {
 		expect(screen.getAllByText('BMW X5')[0]).toBeInTheDocument()
 
 		await waitFor(() => {
-			expect(mockLoadHistory).toHaveBeenCalledWith('car1', 'user2')
+			expect(mockLoadHistory).toHaveBeenCalledWith('car1', 'user2', 'token')
 		})
 
 		expect(mockJoinConversation).toHaveBeenCalledWith('car1', 'user2')
@@ -114,7 +112,7 @@ describe('Messenger', () => {
 	})
 
 	it('shows messages for selected conversation', () => {
-		mockUseChat.mockReturnValue({
+		mockUseChatStore.mockReturnValue({
 			conversations: [conversation],
 			messages: {
 				car1_user2: [myMessage]
@@ -124,7 +122,7 @@ describe('Messenger', () => {
 			joinConversation: mockJoinConversation,
 			leaveConversation: mockLeaveConversation,
 			connected: true
-		})
+		} as unknown as ReturnType<typeof useChatStore>)
 
 		render(<Messenger />)
 
@@ -137,7 +135,7 @@ describe('Messenger', () => {
 	it('sends message and clears input', async () => {
 		mockSendMessage.mockResolvedValue(undefined)
 
-		mockUseChat.mockReturnValue({
+		mockUseChatStore.mockReturnValue({
 			conversations: [conversation],
 			messages: {},
 			loadHistory: mockLoadHistory,
@@ -145,7 +143,7 @@ describe('Messenger', () => {
 			joinConversation: mockJoinConversation,
 			leaveConversation: mockLeaveConversation,
 			connected: true
-		})
+		} as unknown as ReturnType<typeof useChatStore>)
 
 		render(<Messenger />)
 
@@ -168,7 +166,7 @@ describe('Messenger', () => {
 	})
 
 	it('does not send empty message', () => {
-		mockUseChat.mockReturnValue({
+		mockUseChatStore.mockReturnValue({
 			conversations: [conversation],
 			messages: {},
 			loadHistory: mockLoadHistory,
@@ -176,7 +174,7 @@ describe('Messenger', () => {
 			joinConversation: mockJoinConversation,
 			leaveConversation: mockLeaveConversation,
 			connected: true
-		})
+		} as unknown as ReturnType<typeof useChatStore>)
 
 		render(<Messenger />)
 

@@ -1,15 +1,13 @@
 'use client'
 
-import { useAuth } from '@/app/context/authProvider'
-
 import { ThemeContext } from '@/app/context/themeProvider'
+import { useCartStore } from '@/store/cartStore'
+import { useAuthStore } from '@/store/authStore'
 import { Menu, Moon, ShoppingBag, Sun, User, X } from 'lucide-react'
 import Link from 'next/link'
 import { useContext, useState } from 'react'
 import Cart from './cartDrawer'
 import { Button } from './ui/button'
-import { useCartStore } from '@/store/cartStore'
-import { useAuthStore } from '@/store/authStore'
 const navLinks = [
 	{ href: '/', label: 'home' },
 	{ href: '/about', label: 'about' },
@@ -27,13 +25,13 @@ export function Header() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 
 	return (
-		<header className='sticky top-0 z-50 w-full border-b border-border bg-secondary text-secondary-foreground'>
-			<div className='container mx-auto flex justify-between items-center px-4  h-16 md:px-8 md:h-20'>
-				<Link href='/' className='text-2xl font-bold'>
-					<span className='text-lg font-bold uppercase'>CarHub</span>
+		<header className='fixed top-0 left-0 right-0 z-50 w-full border-b border-white/10 bg-black/60 text-white backdrop-blur-md transition-colors'>
+			<div className='container mx-auto flex justify-between items-center px-6 h-16 md:px-12 md:h-20'>
+				<Link href='/' className='text-xl font-bold uppercase tracking-[0.18em]'>
+					CarHub
 				</Link>
 
-				<nav className='md:flex items-center gap-8 hidden ml-2'>
+				<nav className='md:flex items-center gap-8 hidden'>
 					{!user
 						? navLinks
 								.filter(link => link.href !== '/chats')
@@ -41,55 +39,60 @@ export function Header() {
 									<Link
 										key={link.href}
 										href={link.href}
-										className='text-lg font-medium hover:text-gray-500 transition-colors'
+										className='text-sm font-medium uppercase tracking-wider text-white/80 hover:text-white transition-colors'
 									>
 										{link.label}
 									</Link>
 								))
 						: navLinks.map(link => (
-								<Link
-									key={link.href}
-									href={link.href}
-									className='text-sm font-medium hover:text-gray-500 transition-colors mr-2'
-								>
-									{link.label}
-								</Link>
-							))}
+									<Link
+										key={link.href}
+										href={link.href}
+										className='text-sm font-medium uppercase tracking-wider text-white/80 hover:text-white transition-colors'
+									>
+										{link.label}
+									</Link>
+								))}
 				</nav>
-				<div className='flex justify-center'>
+				<div className='flex items-center gap-2'>
 					<Button
-						variant='secondary'
-						className='hover:text-gray-400 transition-colors'
+						variant='ghost'
+						size='icon'
+						className='relative text-white/80 hover:bg-white/10 hover:text-white'
 						onClick={() => setIsCartOpen(true)}
 					>
-						<ShoppingBag /> {items.length}
+						<ShoppingBag />
+						{items.length > 0 && (
+							<span className='absolute -top-1 -right-1 flex h-4 min-w-[16px] items-center justify-center rounded-none bg-white px-1 text-[10px] font-bold text-black'>
+								{items.length}
+							</span>
+						)}
 					</Button>
 					{isCartOpen && <Cart onClose={() => setIsCartOpen(false)} />}
 					<Button
-						variant='secondary'
+						variant='ghost'
+						size='icon'
 						onClick={toggleTheme}
-						className='hover:text-gray-400 transition-colors mx-2'
+						className='text-white/80 hover:bg-white/10 hover:text-white'
 					>
 						{theme === 'light' ? <Moon /> : <Sun />}
 					</Button>
 
-					<Button variant='outline' className='mr-2' asChild>
+					<Button variant='ghost' size='icon' className='text-white/80 hover:bg-white/10 hover:text-white' asChild>
 						<Link href='/login'>
 							<User />
 						</Link>
 					</Button>
 
-					<Button className='hover:bg-primary/80 transition-colors hidden md:block'>
-						<Link
-							href='/contact'
-							className='px-8 text-sm font-semibold uppercase '
-						>
+					<Button className='hidden md:inline-flex h-11 px-6 bg-white text-black hover:bg-white/90' asChild>
+						<Link href='/contact'>
 							Book a call
 						</Link>
 					</Button>
 					<Button
-						variant='secondary'
-						className='md:hidden'
+						variant='ghost'
+						size='icon'
+						className='md:hidden text-white hover:bg-white/10'
 						onClick={() => setIsMenuOpen(prev => !prev)}
 					>
 						{isMenuOpen ? <X /> : <Menu />}
@@ -97,8 +100,8 @@ export function Header() {
 				</div>
 			</div>
 			{isMenuOpen && (
-				<nav className='md:hidden py-4 px-8 sm:px-32 flex justify-between flex-col border-t border-border bg-secondary'>
-					<div className='flex flex-row sm:px-32 justify-between mb-2'>
+				<nav className='md:hidden border-t border-white/10 bg-black/90 px-6 py-6 backdrop-blur-md'>
+					<div className='flex flex-col gap-4'>
 						{!user
 							? navLinks
 									.filter(link => link.href !== '/chats')
@@ -106,30 +109,27 @@ export function Header() {
 										<Link
 											key={link.href}
 											href={link.href}
-											className='text-xs sm:text-lg font-medium hover:text-gray-500 transition-colors'
+											className='text-sm font-medium uppercase tracking-wider text-white/80 hover:text-white transition-colors py-2'
 										>
 											{link.label}
 										</Link>
 									))
 							: navLinks.map(link => (
-									<Link
-										key={link.href}
-										href={link.href}
-										className='text-sm font-medium hover:text-gray-500 transition-colors mr-2'
-									>
-										{link.label}
-									</Link>
-								))}
-					</div>
+										<Link
+											key={link.href}
+											href={link.href}
+											className='text-sm font-medium uppercase tracking-wider text-white/80 hover:text-white transition-colors py-2'
+										>
+											{link.label}
+										</Link>
+									))}
 
-					<Button className='hover:bg-primary/80 transition-colors mt-2'>
-						<Link
-							href='/contact'
-							className='px-8 text-sm font-semibold uppercase '
-						>
-							Book a call
-						</Link>
-					</Button>
+						<Button className='mt-4 h-12 w-full bg-white text-black hover:bg-white/90' asChild>
+							<Link href='/contact'>
+								Book a call
+							</Link>
+						</Button>
+					</div>
 				</nav>
 			)}
 		</header>

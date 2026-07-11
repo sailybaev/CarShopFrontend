@@ -53,7 +53,7 @@ export default function EditListingForm({ listingId }: { listingId: string }) {
 	const [city, setCity] = useState('')
 	const [description, setDescription] = useState('')
 	const [existingImages, setExistingImages] = useState<string[]>([])
-	const [newImages, setNewImages] = useState<File[]>([])
+	const [, setNewImages] = useState<File[]>([])
 	const [newPreviews, setNewPreviews] = useState<string[]>([])
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState('')
@@ -69,8 +69,7 @@ export default function EditListingForm({ listingId }: { listingId: string }) {
 				setCity(data.city)
 				setDescription(data.description)
 				setExistingImages(data.carImages ?? [])
-			} catch (error) {
-				console.log(error)
+			} catch {
 				setError('Failed to load listing')
 			} finally {
 				setLoading(false)
@@ -135,25 +134,24 @@ export default function EditListingForm({ listingId }: { listingId: string }) {
 			if (!response.ok) throw new Error('Failed to update listing')
 
 			router.push('/seller/dashboard')
-		} catch (error) {
-			console.log(error)
+		} catch {
 			setError('Failed to update listing')
 		}
 	}
 
-	if (loading) return <p>Loading listing...</p>
-	if (error) return <p className='text-red-500'>{error}</p>
-	if (!listing) return <p>Listing not found</p>
+	if (loading) return <p className='px-6 py-20'>Loading listing...</p>
+	if (error) return <p className='px-6 py-20 text-destructive'>{error}</p>
+	if (!listing) return <p className='px-6 py-20'>Listing not found</p>
 
 	return (
-		<section className='px-8 py-20'>
-			<div className='mx-auto max-w-2xl'>
-				{errors.city && <p>{errors.city}</p>}
-			{errors.description && <p>{errors.description}</p>}
+		<section className='px-6 py-16 md:px-12 md:py-24'>
+			<div className='mx-auto max-w-2xl border border-border bg-card p-8 md:p-12 shadow-sm'>
+				{errors.city && <p className='mb-4 text-sm text-destructive'>{errors.city}</p>}
+				{errors.description && <p className='mb-4 text-sm text-destructive'>{errors.description}</p>}
 				<form onSubmit={handleSubmit}>
 					<FieldGroup>
 						<div className='text-center'>
-							<h1 className='text-2xl font-bold uppercase'>Edit Listing</h1>
+							<h1 className='text-2xl font-bold uppercase tracking-tight'>Edit Listing</h1>
 							<FieldDescription>
 								Update listing details and review uploaded photos.
 							</FieldDescription>
@@ -196,14 +194,14 @@ export default function EditListingForm({ listingId }: { listingId: string }) {
 							<FieldLabel htmlFor='description'>Description</FieldLabel>
 							<textarea
 								id='description'
-								className='min-h-32 w-full rounded-md border border-border bg-background px-3 py-2 text-sm'
+								className='min-h-32 w-full border border-input bg-transparent px-4 py-3 text-sm outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30'
 								value={description}
 								onChange={e => setDescription(e.target.value)}
 								required
 							/>
 						</Field>
 
-						<Field>
+						<Field className='gap-4'>
 							<FieldLabel>Existing Photos</FieldLabel>
 
 							{existingImages.length === 0 ? (
@@ -215,13 +213,14 @@ export default function EditListingForm({ listingId }: { listingId: string }) {
 											<img
 												src={image}
 												alt='Car photo'
-												className='h-32 w-full rounded-md object-cover'
+												className='h-32 w-full object-cover'
 											/>
 
 											<Button
 												type='button'
 												variant='destructive'
-												className='absolute right-2 top-2 h-8 px-3 text-xs'
+												size='sm'
+												className='absolute right-2 top-2'
 												onClick={() => removeExistingImage(index)}
 											>
 												Delete
@@ -232,7 +231,7 @@ export default function EditListingForm({ listingId }: { listingId: string }) {
 							)}
 						</Field>
 
-						<Field>
+						<Field className='gap-4'>
 							<FieldLabel>Add New Photos</FieldLabel>
 
 							<input
@@ -259,13 +258,14 @@ export default function EditListingForm({ listingId }: { listingId: string }) {
 											<img
 												src={preview}
 												alt='New preview'
-												className='h-32 w-full rounded-md object-cover'
+												className='h-32 w-full object-cover'
 											/>
 
 											<Button
 												type='button'
 												variant='destructive'
-												className='absolute right-2 top-2 h-8 px-3 text-xs'
+												size='sm'
+												className='absolute right-2 top-2'
 												onClick={() => removeNewImage(index)}
 											>
 												Delete
@@ -277,7 +277,7 @@ export default function EditListingForm({ listingId }: { listingId: string }) {
 						</Field>
 
 						<Field>
-							<Button type='submit'>Save Changes</Button>
+							<Button type='submit' size='lg' className='w-full'>Save Changes</Button>
 						</Field>
 					</FieldGroup>
 				</form>

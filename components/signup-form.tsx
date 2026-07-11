@@ -12,7 +12,7 @@ import { SignUpFormSchema } from '@/lib/schemas'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/store/authStore'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { RowsIcon } from '@phosphor-icons/react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
@@ -52,22 +52,16 @@ export default function SignupForm({
 		}
 	}
 	return (
-		<div className={cn('flex flex-col gap-6', className)} {...props}>
+		<div className={cn('flex flex-col gap-8', className)} {...props}>
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<FieldGroup>
-					<div className='flex flex-col items-center gap-2 text-center'>
-						<a
-							href='#'
-							className='flex flex-col items-center gap-2 font-medium'
-						>
-							<div className='flex size-8 items-center justify-center rounded-md'>
-								<RowsIcon className='size-6' />
-							</div>
-							<span className='sr-only'>Acme Inc.</span>
-						</a>
-						<h1 className='text-xl font-bold'>Welcome to Acme Inc.</h1>
+					<div className='flex flex-col items-center gap-3 text-center'>
+						<Link href='/' className='text-xl font-bold uppercase tracking-[0.18em]'>
+							CarHub
+						</Link>
+						<h1 className='text-2xl font-bold'>Create account</h1>
 						<FieldDescription>
-							Already have an account? <a href='/login'>Sign in</a>
+							Already have an account? <Link href='/login' className='font-semibold text-foreground hover:underline'>Sign in</Link>
 						</FieldDescription>
 					</div>
 					<Field>
@@ -78,7 +72,7 @@ export default function SignupForm({
 							placeholder='m@example.com'
 							{...register('email')}
 						/>
-						{errors.email && <p>{errors.email.message}</p>}
+						{errors.email && <p className='text-sm text-destructive mt-1'>{errors.email.message}</p>}
 					</Field>
 					<Field>
 						<FieldLabel htmlFor='password'>Password</FieldLabel>
@@ -88,8 +82,8 @@ export default function SignupForm({
 							placeholder='••••••••'
 							{...register('password')}
 						/>
+						{errors.password && <p className='text-sm text-destructive mt-1'>{errors.password.message}</p>}
 					</Field>
-					{errors.password && <p>{errors.password.message}</p>}
 					<Field>
 						<FieldLabel htmlFor='role'>Role</FieldLabel>
 						<Select
@@ -97,7 +91,7 @@ export default function SignupForm({
 								setValue('role', value as SignUpData['role'])
 							}
 						>
-							<SelectTrigger id='role'>
+							<SelectTrigger id='role' className='h-12'>
 								<SelectValue placeholder='Select role' />
 							</SelectTrigger>
 							<SelectContent>
@@ -108,18 +102,17 @@ export default function SignupForm({
 								))}
 							</SelectContent>
 						</Select>
+						{errors.role && <p className='text-sm text-destructive mt-1'>{errors.role.message}</p>}
 					</Field>
-					{errors.role && <p>{errors.role.message}</p>}
 					<Field>
-						<Button type='submit' disabled={isSubmitting}>
-							Create Account
+						<Button type='submit' disabled={isSubmitting} size='lg' className='w-full'>
+							{isSubmitting ? 'Creating...' : 'Create Account'}
 						</Button>
 					</Field>
 				</FieldGroup>
 			</form>
-			<FieldDescription className='px-6 text-center'>
-				By clicking continue, you agree to our <a href='#'>Terms of Service</a>{' '}
-				and <a href='#'>Privacy Policy</a>.
+			<FieldDescription className='text-center'>
+				By clicking continue, you agree to our <a href='#' className='font-semibold text-foreground hover:underline'>Terms of Service</a> and <a href='#' className='font-semibold text-foreground hover:underline'>Privacy Policy</a>.
 			</FieldDescription>
 		</div>
 	)

@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Google Apps Script uses global functions referenced by the platform, not by project code.
+    "google-apps-script/**",
   ]),
 ]);
 

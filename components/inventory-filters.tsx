@@ -1,5 +1,6 @@
 'use client'
 
+import FadeIn from '@/components/animations/FadeIn'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import {
 	Select,
@@ -63,60 +64,57 @@ export default function InventoryFilters() {
 		sort !== 'default'
 
 	return (
-		<div className='flex flex-wrap items-center gap- bg-secondary text-secondary-foreground px-8'>
-			<Select value={brand} onValueChange={v => updateParam('brand', v)}>
-				<SelectTrigger className='h-10 min-w-3 uppercase'>
-					<SelectValue placeholder='Brand' />
-				</SelectTrigger>
-				<SelectContent>
-					{BRANDS.map(b => (
-						<SelectItem key={b} value={b} className='text-xs uppercase'>
-							{b === 'All' ? 'All brands' : b}
-						</SelectItem>
-					))}
-				</SelectContent>
-			</Select>
-			<Select value={fuelType} onValueChange={v => updateParam('fuelType', v)}>
-				<SelectTrigger className='h-10 min-w-3 uppercase'>
-					<SelectValue placeholder='Fuel Type' />
-				</SelectTrigger>
-				<SelectContent>
-					{FUEL_TYPES.map(ft => (
-						<SelectItem key={ft} value={ft} className='text-xs uppercase'>
-							{ft === 'All' ? 'All fuel types' : ft}
-						</SelectItem>
-					))}
-				</SelectContent>
-			</Select>
-			<Select value={transmission} onValueChange={v => updateParam('transmission', v)}>
-				<SelectTrigger className='h-10 min-w-3 uppercase'>
-					<SelectValue placeholder='Transmission' />
-				</SelectTrigger>
-				<SelectContent>
-					{TRANSMISSIONS.map(t => (
-						<SelectItem key={t} value={t} className='text-xs uppercase'>
-							{t === 'All' ? 'All transmissions' : t}
-						</SelectItem>
-					))}
-				</SelectContent>
-			</Select>
-			<Select value={sort} onValueChange={v => updateParam('sort', v)}>
-				<SelectTrigger className='h-10 min-w-10 uppercase'>
-					<SelectValue placeholder='Sort By' />
-				</SelectTrigger>
-				<SelectContent>
-					{SORT_OPTIONS.map(s => (
-						<SelectItem key={s.value} value={s.value} className='text-xs uppercase'>
-							{s.label}
-						</SelectItem>
-					))}
-				</SelectContent>
-			</Select>
-		</div>
+		<FadeIn delay={0.1}>
+			<div className='flex flex-wrap items-center gap-3 bg-secondary px-6 py-5 md:px-12'>
+				<Select value={brand} onValueChange={v => updateParam('brand', v)}>
+					<SelectTrigger className='h-12 min-w-[140px] border-border bg-background uppercase text-xs font-semibold tracking-wider'>
+						<SelectValue placeholder='Brand' />
+					</SelectTrigger>
+					<SelectContent>
+						{BRANDS.map(b => (
+							<SelectItem key={b} value={b} className='text-xs uppercase'>
+								{b === 'All' ? 'All brands' : b}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+				<Select value={fuelType} onValueChange={v => updateParam('fuelType', v)}>
+					<SelectTrigger className='h-12 min-w-[140px] border-border bg-background uppercase text-xs font-semibold tracking-wider'>
+						<SelectValue placeholder='Fuel Type' />
+					</SelectTrigger>
+					<SelectContent>
+						{FUEL_TYPES.map(ft => (
+							<SelectItem key={ft} value={ft} className='text-xs uppercase'>
+								{ft === 'All' ? 'All fuel types' : ft}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+				<Select value={transmission} onValueChange={v => updateParam('transmission', v)}>
+					<SelectTrigger className='h-12 min-w-[160px] border-border bg-background uppercase text-xs font-semibold tracking-wider'>
+						<SelectValue placeholder='Transmission' />
+					</SelectTrigger>
+					<SelectContent>
+						{TRANSMISSIONS.map(t => (
+							<SelectItem key={t} value={t} className='text-xs uppercase'>
+								{t === 'All' ? 'All transmissions' : t}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+				<Select value={sort} onValueChange={v => updateParam('sort', v)}>
+					<SelectTrigger className='h-12 min-w-[160px] border-border bg-background uppercase text-xs font-semibold tracking-wider'>
+						<SelectValue placeholder='Sort By' />
+					</SelectTrigger>
+					<SelectContent>
+						{SORT_OPTIONS.map(s => (
+							<SelectItem key={s.value} value={s.value} className='text-xs uppercase'>
+								{s.label}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+			</div>
+		</FadeIn>
 	)
 }
-
-/// Server: request -> html
-//
-//
-// Client: html -> request -> browser()->html

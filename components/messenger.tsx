@@ -1,6 +1,6 @@
 'use client'
 
-import { Conversation, convKey, useChat } from '@/lib/socket'
+import { Conversation, convKey, useChatStore } from '@/store/chatStore'
 import { useAuthStore } from '@/store/authStore'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
@@ -10,6 +10,7 @@ import { Input } from './ui/input'
 
 export default function Messenger() {
 	const user = useAuthStore(x => x.user)
+	const token = useAuthStore(x=>x.token)
 	const {
 		conversations,
 		messages,
@@ -18,13 +19,13 @@ export default function Messenger() {
 		joinConversation,
 		leaveConversation,
 		connected
-	} = useChat()
+	} = useChatStore()
 
 	const [selected, setSelected] = useState<Conversation | null>(null)
 	const [text, setText] = useState('')
 	useEffect(() => {
 		if (!selected) return
-		loadHistory(selected.listingId, selected.otherUserId)
+		loadHistory(selected.listingId, selected.otherUserId, token!)
 		joinConversation(selected.listingId, selected.otherUserId)
 
 		return () => {
@@ -54,9 +55,9 @@ export default function Messenger() {
 					<h1 className='mt-3 text-4xl font-bold'>No conversation yet</h1>
 					<p>Start a conversation from a car listing page</p>
 					<Button
-						className='px-8 mt-4 text-md font-semibold uppercase hover:bg-white/10'
-						asChild
-					>
+									className='px-8 mt-4 text-sm font-semibold uppercase hover:bg-white/10'
+									asChild
+								>
 						<Link href='/inventory'>Visit Our Store </Link>
 					</Button>
 				</div>
@@ -65,7 +66,7 @@ export default function Messenger() {
 	}
 
 	return (
-		<section className=' px-4 py-8 sm:px-8 sm:py-12'>
+		<section className='px-4 pt-20 pb-8 sm:px-8 sm:pt-24 sm:pb-12'>
 			<div className='mx-auto grid h-[75vh] max-w-6xl grid-cols-1 overflow-hidden rounded-md border border-border bg-background shadow-sm md:grid-cols-[320px_1fr]'>
 				<aside
 					className={`${selected ? 'hidden md:block' : 'block'} border-b border-border md:border-b-0 md:border-r`}
@@ -75,9 +76,9 @@ export default function Messenger() {
 							Messages
 						</p>
 						<h1 className='mt-1 text-xl font-bold'>Chats</h1>
-						<div className='mt- flex items-center gap-2'>
+										<div className='mt-3 flex items-center gap-2'>
 							<span
-								className={`h-2 w-2 rounded-full ${connected ? ' bg-green-600' : 'bg-red-500'}`}
+													className={`h-2 w-2 rounded-none ${connected ? ' bg-green-600' : 'bg-red-500'}`}
 							/>
 							<p className=' text-sm text-muted-foreground'>
 								{connected ? 'Connected' : 'Disconnected'}
@@ -94,14 +95,14 @@ export default function Messenger() {
 								<Button
 									key={`${conv.listingId}_${conv.otherUserId}`}
 									onClick={() => setSelected(conv)}
-									className={`flex w-full h-20 items-center gap-4 border-b border-border p-4 text-left transition ${
+									className={`flex h-20 w-full shrink-0 items-center justify-start gap-4 border-b border-border p-4 text-left normal-case transition ${
 										isActive ? 'bg-secondary' : 'hover:bg-secondary/90'
 									}`}
 								>
 									<img
 										src={conv.listingImage}
 										alt={conv.listingTitle}
-										className='h-16 w-24 shrink-0 rounded-md object-cover'
+										className='h-16 w-24 shrink-0 rounded-none object-cover'
 									/>
 									<div className='min-w-0 '>
 										<p className='truncate font-semibold mt-1 text-muted-foreground'>
@@ -129,18 +130,18 @@ export default function Messenger() {
 							<header className='flex items-center gap-4 border-b border-border p-5'>
 								<Button
 									type='button'
-									variant='secondary'
-									onClick={() => setSelected(null)}
-									className='md:hidden rounded-md'
-								>
-									<ArrowLeft />
-									Chats
-								</Button>
-								<img
-									src={selected.listingImage}
-									alt={selected.listingTitle}
-									className='h-14 w-20 shrink-0 rounded-md object-cover'
-								/>
+										variant='outline'
+										onClick={() => setSelected(null)}
+										className='md:hidden'
+									>
+										<ArrowLeft />
+										Chats
+									</Button>
+										<img
+											src={selected.listingImage}
+											alt={selected.listingTitle}
+											className='h-14 w-20 shrink-0 rounded-none object-cover'
+										/>
 								<div className='min-w-0'>
 									<p className='text-xs font-semibold uppercase tracking-widest text-muted-foreground'>
 										Conversation
@@ -165,7 +166,7 @@ export default function Messenger() {
 												className={`mb-4 flex ${isMine ? 'justify-end' : 'justify-start'}`}
 											>
 												<div
-													className={`max-w-[85%] rounded-md text-sm shadow-sm sm:max-w-[70%] px-4 py-3 ${isMine ? 'bg-primary text-primary-foreground' : 'border border-border  bg-backgound'}`}
+													className={`max-w-[85%] rounded-none text-sm shadow-sm sm:max-w-[70%] px-4 py-3 ${isMine ? 'bg-primary text-primary-foreground' : 'border border-border bg-background'}`}
 												>
 													<p>{msg.message}</p>
 													<div className='mt-2 flex items-center gap-2 text-xs opacity-70'>
@@ -194,12 +195,12 @@ export default function Messenger() {
 									value={text}
 									onChange={e => setText(e.target.value)}
 									placeholder='Type a message...'
-									className='h-12 flex-1 rounded-md'
+									className='h-12 flex-1 rounded-none'
 								/>
 								<Button
 									type='submit'
 									disabled={!text.trim() || !connected}
-									className='h-12 rounded-md px-5'
+									className='h-12 rounded-none px-5'
 								>
 									Send
 								</Button>

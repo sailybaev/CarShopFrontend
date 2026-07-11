@@ -10,7 +10,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/store/authStore'
-import { RowsIcon } from '@phosphor-icons/react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -20,35 +20,31 @@ export function LoginForm({
 }: React.ComponentProps<'div'>) {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const [error, setError] = useState('')
 	const  Login  = useAuthStore(x=>x.Login)
 	const router = useRouter()
 
 	async function handleSubmit(e: React.FormEvent) {
 		e.preventDefault()
+		setError('')
 		try {
 			await Login(email, password)
 			router.push('/inventory')
 		} catch (error: unknown) {
-			console.log(error)
+			setError(error instanceof Error ? error.message : 'Login failed')
 		}
 	}
 	return (
-		<div className={cn('flex flex-col gap-6', className)} {...props}>
+		<div className={cn('flex flex-col gap-8', className)} {...props}>
 			<form onSubmit={handleSubmit}>
 				<FieldGroup>
-					<div className='flex flex-col items-center gap-2 text-center'>
-						<a
-							href='#'
-							className='flex flex-col items-center gap-2 font-medium'
-						>
-							<div className='flex size-8 items-center justify-center rounded-md'>
-								<RowsIcon className='size-6' />
-							</div>
-							<span className='sr-only'>Acme Inc.</span>
-						</a>
-						<h1 className='text-xl font-bold'>Welcome to Acme Inc.</h1>
+					<div className='flex flex-col items-center gap-3 text-center'>
+						<Link href='/' className='text-xl font-bold uppercase tracking-[0.18em]'>
+							CarHub
+						</Link>
+						<h1 className='text-2xl font-bold'>Welcome back</h1>
 						<FieldDescription>
-							Don&apos;t have an account? <a href='/signup'>Sign up</a>
+							Don&apos;t have an account? <Link href='/signup' className='font-semibold text-foreground hover:underline'>Sign up</Link>
 						</FieldDescription>
 					</div>
 					<Field>
@@ -73,14 +69,20 @@ export function LoginForm({
 							onChange={e => setPassword(e.target.value)}
 						/>
 					</Field>
+					{error && (
+						<p className='text-sm text-destructive' role='alert'>
+							{error}
+						</p>
+					)}
 					<Field>
-						<Button type='submit'>Login</Button>
+						<Button type='submit' size='lg' className='w-full'>
+							Login
+						</Button>
 					</Field>
 				</FieldGroup>
 			</form>
-			<FieldDescription className='px-6 text-center'>
-				By clicking continue, you agree to our <a href='#'>Terms of Service</a>{' '}
-				and <a href='#'>Privacy Policy</a>.
+			<FieldDescription className='text-center'>
+				By clicking continue, you agree to our <a href='#' className='font-semibold text-foreground hover:underline'>Terms of Service</a> and <a href='#' className='font-semibold text-foreground hover:underline'>Privacy Policy</a>.
 			</FieldDescription>
 		</div>
 	)

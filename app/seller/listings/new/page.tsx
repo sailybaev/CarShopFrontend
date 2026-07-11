@@ -22,24 +22,11 @@ export interface Car {
 	featured?: boolean
 }
 
-interface Listings {
-	sellerId: string
-	moderationStatus: number
-	car: Car
-	carId: string
-	view: number
-	city: string
-	description: string
-	carImages: string[]
-	listingStatus: number
-}
-
 export default function CreateNewListing() {
 	const [carBrand, setCarBrand] = useState('')
 	const [carModel, setCarModel] = useState('')
 	const [carYear, setCarYear] = useState('')
 	const [carPrice, setCarPrice] = useState('')
-	const [carCurrency, setCarCurrency] = useState('')
 	const [carCity, setCarCity] = useState('')
 	const [carDescription, setCarDescription] = useState('')
 
@@ -79,7 +66,7 @@ export default function CreateNewListing() {
 		}
 
 		if (!token) {
-			setError('You msut be logged in')
+			setError('You must be logged in')
 			return
 		}
 		try {
@@ -109,7 +96,7 @@ export default function CreateNewListing() {
 			formData.append('city', carCity)
 			formData.append('description', carDescription)
 
-			previews.forEach(image => {
+			images.forEach(image => {
 				formData.append('carImages', image)
 			})
 
@@ -132,60 +119,62 @@ export default function CreateNewListing() {
 		}
 	}
 	return (
-		<section className='px-8 py-20'>
-			<div className='mx-auto'>
+		<section className='px-6 py-16 md:px-12 md:py-24'>
+			<div className='mx-auto max-w-2xl border border-border bg-card p-8 shadow-sm md:p-12'>
 				<form onSubmit={handleSubmit}>
 					<FieldGroup>
 						<div className='flex flex-col items-center gap-2 text-center'>
-							<h1 className='text-xl font-bold'>Create New Listing</h1>
+							<h1 className='text-2xl font-bold uppercase tracking-tight'>Create New Listing</h1>
 							<FieldDescription>
 								Add car details, listing information and vehicle photos
 							</FieldDescription>
 						</div>
-						<Field>
-							<FieldLabel htmlFor='carBrand'>Car Brand</FieldLabel>
-							<Input
-								id='carBrand'
-								type='text'
-								placeholder='BMW'
-								value={carBrand}
-								onChange={e => setCarBrand(e.target.value)}
-								required
-							/>
-						</Field>
-						<Field>
-							<FieldLabel htmlFor='carModel'>Model</FieldLabel>
-							<Input
-								id='carModel'
-								type='text'
-								placeholder='X5'
-								value={carModel}
-								onChange={e => setCarModel(e.target.value)}
-								required
-							/>
-						</Field>
-						<Field>
-							<FieldLabel htmlFor='carYear'>Year</FieldLabel>
-							<Input
-								id='carYear'
-								type='number'
-								placeholder='2005'
-								value={carYear}
-								onChange={e => setCarYear(e.target.value)}
-								required
-							/>
-						</Field>
-						<Field>
-							<FieldLabel htmlFor='carPrice'>Price</FieldLabel>
-							<Input
-								id='carPrice'
-								type='number'
-								placeholder='75,000'
-								value={carPrice}
-								onChange={e => setCarPrice(e.target.value)}
-								required
-							/>
-						</Field>
+						<div className='grid grid-cols-1 gap-5 sm:grid-cols-2'>
+							<Field>
+								<FieldLabel htmlFor='carBrand'>Car Brand</FieldLabel>
+								<Input
+									id='carBrand'
+									type='text'
+									placeholder='BMW'
+									value={carBrand}
+									onChange={e => setCarBrand(e.target.value)}
+									required
+								/>
+							</Field>
+							<Field>
+								<FieldLabel htmlFor='carModel'>Model</FieldLabel>
+								<Input
+									id='carModel'
+									type='text'
+									placeholder='X5'
+									value={carModel}
+									onChange={e => setCarModel(e.target.value)}
+									required
+								/>
+							</Field>
+							<Field>
+								<FieldLabel htmlFor='carYear'>Year</FieldLabel>
+								<Input
+									id='carYear'
+									type='number'
+									placeholder='2005'
+									value={carYear}
+									onChange={e => setCarYear(e.target.value)}
+									required
+								/>
+							</Field>
+							<Field>
+								<FieldLabel htmlFor='carPrice'>Price</FieldLabel>
+								<Input
+									id='carPrice'
+									type='number'
+									placeholder='75000'
+									value={carPrice}
+									onChange={e => setCarPrice(e.target.value)}
+									required
+								/>
+							</Field>
+						</div>
 
 						<Field>
 							<FieldLabel htmlFor='carCity'>City</FieldLabel>
@@ -198,17 +187,18 @@ export default function CreateNewListing() {
 								required
 							/>
 						</Field>
-						<Field>
-							<FieldLabel htmlFor='carDescription'>Deccription</FieldLabel>
-							<textarea
+							<Field>
+								<FieldLabel htmlFor='description'>Description</FieldLabel>
+								<textarea
 								id='description'
 								placeholder='Describe the car condition, equipment and details...'
 								value={carDescription}
 								onChange={e => setCarDescription(e.target.value)}
 								required
+								className='min-h-32 w-full border border-input bg-transparent px-4 py-3 text-sm outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30'
 							/>
 						</Field>
-						<Field>
+						<Field className='gap-4'>
 							<FieldLabel>Car Photos</FieldLabel>
 							<input
 								type='file'
@@ -221,6 +211,7 @@ export default function CreateNewListing() {
 
 							<Button
 								type='button'
+								variant='outline'
 								onClick={() => fileInputRef.current?.click()}
 							>
 								Upload Photos
@@ -232,11 +223,13 @@ export default function CreateNewListing() {
 											<img
 												src={preview}
 												alt='Car preview'
-												className='h-32 w-full rounded-md object-cover'
+												className='h-32 w-full object-cover'
 											/>
 											<Button
 												type='button'
-												className='absolute right-2 top-2 h-8 px-3 text-xs'
+												variant='destructive'
+												size='sm'
+												className='absolute right-2 top-2'
 												onClick={() => removeImage(index)}
 											>
 												Delete
@@ -246,10 +239,10 @@ export default function CreateNewListing() {
 								</div>
 							)}
 						</Field>
-						{error && <p>{error}</p>}
+						{error && <p className='text-sm text-destructive'>{error}</p>}
 
 						<Field>
-							<Button type='submit' disabled={loading}>
+							<Button type='submit' disabled={loading} size='lg' className='w-full'>
 								{loading ? 'Creating...' : 'Create Listing'}
 							</Button>
 						</Field>

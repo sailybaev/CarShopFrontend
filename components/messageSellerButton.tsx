@@ -1,10 +1,9 @@
 'use client'
 
-import { useAuth } from '@/app/context/authProvider'
 import { useChatStore } from '@/store/chatStore'
+import { useAuthStore } from '@/store/authStore'
 import { useRouter } from 'next/navigation'
 import { Button } from './ui/button'
-import { useAuthStore } from '@/store/authStore'
 
 
 interface MessageSellerButtonProps {
@@ -44,6 +43,6 @@ export default function MessageSellerButton({
 		router.push(`/chats?listing=${listingId}&user=${seller.userId}`)
 	}
 	return(
-		<Button type='button' onClick={handleMessageSeller}>Message Seller</Button>
+		<Button type='button' className='h-14 w-full' onClick={handleMessageSeller}>Message Seller</Button>
 	)
 }

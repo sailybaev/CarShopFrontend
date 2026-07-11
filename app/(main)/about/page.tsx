@@ -23,9 +23,9 @@ export default function About() {
 				<p className='text-muted-foreground'>At CarShop, our mission</p>
 			</div>
 			<section className='px-8 py-20 pt-10'>
-				<div className='mx-auto'>
-					<div className=' md:grid grid-cols-2 items-center gap-20'>
-						<div className='relative aspect-4/3 overflow-hidden bg-muted'>
+				<div className='mx-auto max-w-7xl'>
+					<div className='md:grid grid-cols-2 items-center gap-20'>
+						<div className='relative aspect-[4/3] overflow-hidden bg-muted'>
 							<Image
 								src='/carabout.jpg'
 								alt='About CarShop'
@@ -37,11 +37,11 @@ export default function About() {
 							<p className='text-sm uppercase font-semibold text-muted-foreground mt-10'>
 								Our story
 							</p>
-							<h2 className='mt-2  text-xl sm:text-4xl font-bold tracking-tight'>
+							<h2 className='mt-2 text-xl sm:text-4xl font-bold tracking-tight'>
 								Redifined Car Buying Experience
 							</h2>
 							<div className='mt-2 h-px w-full bg-accent'></div>
-							<div className='mt-10 space-y-6 text-muted-foreground text-md sm:text-lg'>
+							<div className='mt-10 space-y-6 text-muted-foreground text-base sm:text-lg'>
 								<p>
 									Founded in 2024, CarShop was born out of a desire to
 									revolutionize the way people buy cars. We understand that
@@ -65,15 +65,15 @@ export default function About() {
 					</div>
 				</div>
 			</section>
-			<section className='px-8 py-10 bg-primary text-white'>
-				<div className='mx-auto flex justify-between'>
-					<h2>Ready to visit us?</h2>
+			<section className='px-8 py-10 bg-primary text-primary-foreground'>
+				<div className='mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 md:flex-row md:items-center'>
+					<h2 className='text-2xl font-bold tracking-tight md:text-3xl'>Ready to visit us?</h2>
 					<Button
-						variant='ghost'
-						className='px-8 text-sm font-semibold uppercase text-white hover:bg-white/10 hover:text-white'
+						variant='outline'
+						className='h-12 px-8 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground'
 						asChild
 					>
-						<Link href='/inventory'>Visit Our Store </Link>
+						<Link href='/inventory'>Visit Our Store</Link>
 					</Button>
 				</div>
 			</section>

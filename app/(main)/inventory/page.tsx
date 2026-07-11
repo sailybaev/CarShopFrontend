@@ -38,21 +38,28 @@ function sortCars(filteredCars: Car[], sort: string): Car[] {
 	return sorted
 }
 
-export default function InventoryPage() {
+function InventoryContent() {
 	const params = useSearchParams()
-	const { data, isPending, isError, error, isFetching, refetch } = useQuery<
-		Car[]
-	>({
+	const { data, isLoading } = useQuery<Car[]>({
 		queryKey: ['listings'],
 		queryFn: fetchListing,
 		staleTime: 60000
 	})
 	const brand = params.get('brand') ?? 'All'
-
 	const sort = params.get('sort') ?? 'price'
 	const filtered = filterCars(data ?? [], brand)
 	const sorted = sortCars(filtered, sort)
 
+	return (
+		<>
+			<InventoryFilters />
+			{isLoading && <p className='px-6 py-4 text-center text-muted-foreground'>Loading...</p>}
+			<InventorySection Cars={sorted} />
+		</>
+	)
+}
+
+export default function InventoryPage() {
 	return (
 		<>
 			<InventoryHeader
@@ -61,11 +68,9 @@ export default function InventoryPage() {
 				text3='Explore our curated collection of premium vehicles. Find the perfect car tailored to your lifestyle and preferences.'
 			/>
 
-			<Suspense fallback={<p>Loading...</p>}>
-				<InventoryFilters />
+			<Suspense fallback={<p className='px-6 py-4 text-center text-muted-foreground'>Loading...</p>}>
+				<InventoryContent />
 			</Suspense>
-
-			<InventorySection Cars={sorted} />
 		</>
 	)
 }
