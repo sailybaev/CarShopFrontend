@@ -1,15 +1,15 @@
-import { useQuery } from '@tanstack/react-query'
 import { Car } from './cars'
 
 interface apiMoney {
 	amount: number
 	currency: string
 }
-const api = 'http://localhost:5107'
+const api = 'http://test.carshop.sailybaev.kz'
 
 // TODO: Replace with your Google Apps Script Web App URL after deployment.
 // See google-apps-script/README.md for setup instructions.
-const GOOGLE_APPS_SCRIPT_CONTACT_URL = 'https://script.google.com/macros/s/AKfycbxmEfuhioGt9mxfbVxsL7fhRjzMdV--pdqfrLH8zgBWEe6NN_0lxpiktaOwjFE-Kpa9QQ/exec'
+const GOOGLE_APPS_SCRIPT_CONTACT_URL =
+	'https://script.google.com/macros/s/AKfycbxmEfuhioGt9mxfbVxsL7fhRjzMdV--pdqfrLH8zgBWEe6NN_0lxpiktaOwjFE-Kpa9QQ/exec'
 
 export interface ContactFormData {
 	firstName: string
@@ -85,7 +85,9 @@ export async function fetchListingById(id: string): Promise<Car | null> {
 	}
 }
 
-export async function submitContactForm(data: ContactFormData): Promise<{ success: boolean; message?: string; error?: string }> {
+export async function submitContactForm(
+	data: ContactFormData
+): Promise<{ success: boolean; message?: string; error?: string }> {
 	try {
 		const response = await fetch(GOOGLE_APPS_SCRIPT_CONTACT_URL, {
 			method: 'POST',
@@ -98,7 +100,10 @@ export async function submitContactForm(data: ContactFormData): Promise<{ succes
 		console.log('[submitContactForm] response.status:', response.status)
 
 		if (response.status !== 200) {
-			return { success: false, error: `Server responded with status ${response.status}.` }
+			return {
+				success: false,
+				error: `Server responded with status ${response.status}.`
+			}
 		}
 
 		let result: Record<string, unknown> | null = null
@@ -111,16 +116,32 @@ export async function submitContactForm(data: ContactFormData): Promise<{ succes
 		}
 
 		if (result && result.success === true) {
-			return { success: true, message: typeof result.message === 'string' ? result.message : 'Submission saved' }
+			return {
+				success: true,
+				message:
+					typeof result.message === 'string'
+						? result.message
+						: 'Submission saved'
+			}
 		}
 
-		if (result && result.success === false && typeof result.error === 'string') {
+		if (
+			result &&
+			result.success === false &&
+			typeof result.error === 'string'
+		) {
 			return { success: false, error: result.error }
 		}
 
-		return { success: true, message: 'Thank you. Your message has been received.' }
+		return {
+			success: true,
+			message: 'Thank you. Your message has been received.'
+		}
 	} catch (networkError) {
 		console.error('[submitContactForm] network error:', networkError)
-		return { success: false, error: 'Failed to submit contact form. Please try again later.' }
+		return {
+			success: false,
+			error: 'Failed to submit contact form. Please try again later.'
+		}
 	}
 }
